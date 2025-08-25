@@ -8,60 +8,68 @@ Tests must validate functionality, not achieve coverage numbers. The goal is mea
 
 ### 1. Coverage-Driven File Naming
 ❌ **Prohibited Patterns:**
-- `test_coverage_*.py`
-- `test_*_coverage.py` 
-- `test_*_boost.py`
-- `test_quick_wins.py`
+- `*CoverageTest.java`
+- `*TestCoverage.java` 
+- `*BoostTest.java`
+- `QuickWinsTest.java`
 
 ✅ **Correct Patterns:**
-- `test_user_management.py`
-- `test_nutrition_tracking.py`
-- `test_medicine_interactions.py`
+- `UserManagementTest.java`
+- `NutritionTrackingTest.java`
+- `MedicineInteractionsTest.java`
 
 ### 2. Mock Saturation Testing
 ❌ **Prohibited Patterns:**
-- Tests with >3 `@patch` decorators
-- Tests that mock all dependencies without testing real integration
-- Pure mocking tests that validate method calls, not functionality
+- Tests with >3 `@Mock` annotations per test class
+- Tests that use Mockito.when() for all dependencies without testing real integration
+- Pure mocking tests that only verify() method calls, not functionality
 
 ✅ **Correct Patterns:**
-- Integration tests with real database operations
-- Unit tests with minimal, focused mocking
-- Tests that validate actual business logic outcomes
+- Integration tests with @SpringBootTest and real database operations
+- Unit tests with minimal, focused mocking using @MockBean or @Mock
+- Tests that validate actual business logic outcomes with assertions
 
 ### 3. Meaningless Assertions
 ❌ **Prohibited Patterns:**
-```python
-def test_service_initialization():
-    service = SomeService()
-    assert service is not None  # Meaningless
+```java
+@Test
+public void testServiceInitialization() {
+    SomeService service = new SomeService();
+    assertNotNull(service);  // Meaningless
+}
 
-def test_has_method():
-    obj = SomeClass()
-    assert hasattr(obj, 'method')  # No validation
+@Test
+public void testHasMethod() {
+    SomeClass obj = new SomeClass();
+    assertTrue(obj.getClass().getDeclaredMethods().length > 0);  // No validation
+}
 ```
 
 ✅ **Correct Patterns:**
-```python
-def test_service_calculates_correctly():
-    service = SomeService()
-    result = service.calculate(input_data)
-    assert result == expected_output  # Validates functionality
+```java
+@Test
+public void testServiceCalculatesCorrectly() {
+    SomeService service = new SomeService();
+    Result result = service.calculate(inputData);
+    assertEquals(expectedOutput, result);  // Validates functionality
+}
 
-def test_method_handles_edge_case():
-    obj = SomeClass()
-    result = obj.method(edge_case_input)
-    assert result.is_valid()  # Validates behavior
+@Test
+public void testMethodHandlesEdgeCase() {
+    SomeClass obj = new SomeClass();
+    Result result = obj.method(edgeCaseInput);
+    assertTrue(result.isValid());  // Validates behavior
+}
 ```
 
 ### 4. Redundant Test Files
 ❌ **Prohibited Patterns:**
-- Multiple `test_[component]_*.py` files for same component
-- `test_repository_user.py`, `test_user_repository_extended.py`, `test_user_repository_coverage.py`
+- Multiple `*Test.java` files for same component
+- `UserRepositoryTest.java`, `UserRepositoryExtendedTest.java`, `UserRepositoryCoverageTest.java`
 
 ✅ **Correct Patterns:**
-- One comprehensive test file per major component
-- Organized by architectural layer: `test_repositories/`, `test_services/`, `test_api/`
+- One comprehensive test class per major component
+- Organized by architectural layer: `repository/`, `service/`, `controller/` test packages
 
 ### 5. API Mismatch Testing
 ❌ **Prohibited Patterns:**

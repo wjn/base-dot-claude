@@ -1,14 +1,14 @@
 # Code Quality
 
-- We strive for PEP 8 compliance with excellent ratings of 90% or higher.
-- In codebases that aren't Python, we strive for the equivalent of PEP 8 compliance.
-- As is possible, follow the Unix principle of a function should do one thing well.
-- The simpler solution generally always  should be preferred.
+- We strive for Google Java Style Guide compliance with excellent ratings of 90% or higher.
+- We enforce Checkstyle, SpotBugs, and PMD static analysis with zero violations for critical issues.
+- As is possible, follow the Unix principle of a method should do one thing well.
+- The simpler solution generally always should be preferred.
 - All code should be refactored **at least** once after a functionality has been successfully achieved.
 - Code should be easily readable by humans.
-- Each file, class, and method should be well documented using comment blocks.
+- Each file, class, and method should be well documented using Javadoc comments.
 - Code should have corresponding tests and documentation in the @docs directory per @docs/README.md
-- A reputable and appropriate linter should be used for all work
-- Linting scores should be over 90% at all times
+- Checkstyle, SpotBugs, PMD, and SonarLint should be used for all work
+- Static analysis scores should be over 90% at all times with zero critical violations
 
 

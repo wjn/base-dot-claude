@@ -4,26 +4,27 @@
 
 - All development should be test driven. This means we start with tests for new work or adding features.
 - We ALWAYS run the entire test suite after making changes to prove no regressions have occurred.
-- 85% test coverage is a minimum
+- 85% test coverage is a minimum (using JaCoCo for coverage reporting)
 - We start and end with tests in our development process.
 - Tests should be run in parallel to support the fastest execution time.
 
   - If tests cannot run in parallel they should be segmented out, such that the tests in the segment run sequentially.
   - The segments themselves are run in parallel with the other tests.
 
-- For pytest we should always be running in the python virtual environment.
-- We do not ignore or suppress tests, warnings, or errors.
+- For JUnit/TestNG we should always be running tests through Maven or Gradle build systems.
+- We do not ignore or suppress tests, warnings, or errors using @Ignore, @Disabled, or @SuppressWarnings.
 - We fix root causes rather than just making tests pass.
 - Goal for tests: the entire test suite runs with no errors, warnings, or failures and coverage is minimum 85%.
 - We do not disable tests, test files, or test suites. We fix the root issues causing problems for those.
 
 ### Requirements for Running Test Suites
-- Use designated Claude test commands to prevent system resource exhaustion
-- **Web Platform**: Use `npm run test:claude` or `npm run test:claude:coverage` instead of `npm test`
-- **Mobile Platform**: Use `npm run test:claude` or `npm run test:claude:coverage` instead of `npm test`
-- **Backend Platform**: Continue using standard pytest commands (no process spawning issues)
-- These commands enforce single-threaded execution and process isolation to prevent 20+ node process spawning
+- Use designated build commands to prevent system resource exhaustion
+- **Maven**: Use `mvn clean test` or `mvn clean verify` for integration tests
+- **Gradle**: Use `gradle clean test` or `gradle clean check` for full validation
+- **Spring Boot**: Use `mvn spring-boot:test` or `gradle bootTest` for Spring applications
+- These commands enforce proper JVM memory allocation and fork settings to prevent OutOfMemoryError
 - AI instances should coordinate test execution to avoid simultaneous resource-intensive operations
+- Use `-DforkCount=1` for Maven Surefire or `maxParallelForks = 1` for Gradle when resource constrained
 
 TODO: update to use the tools/quality app given it will generate reports.
 
@@ -31,7 +32,7 @@ TODO: update to use the tools/quality app given it will generate reports.
 
 - Whenever there are failing tests we want to resolve those failures by addressing the root cause causing the failure
 - We don't just want to quiet the testing system and thereby swallow errors, failures, or warnings
-- You should use the testing output AND the logs in the logs/ directory, e.g.,  @mydiygarage.log or tests.log.
+- You should use the testing output AND the logs in the logs/ directory, e.g., application.log or test-output.log.
 - The simpler resolution generally always should be preferred.
 
 ## Test Quality Requirements
