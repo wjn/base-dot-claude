@@ -1,0 +1,26 @@
+# Multi-Stream Coordination Strategy
+
+## Maintaining Your Terminal Session
+- Please always keep your primary focus directory as part of your session title.
+- For example, if you're working on web/ your session title would be "Web" or even better "Web Platform"
+
+## **Resource Coordination Rules**:
+- **Database Access**: Only one stream should run database-modifying tests at a time
+- **Performance Testing**: Only Alpha stream runs performance/load tests to avoid resource conflicts
+- **File System**: Coordinate file modifications - avoid simultaneous edits to shared files
+- **Test Execution**: Stagger test suite execution across streams (5-10 minute gaps)
+- **Port Usage**: Assign specific port ranges to each stream to avoid conflicts
+
+## **Communication Protocol**:
+- **Main.md**: Central coordination document updated by all streams
+- **Handoff Notes**: Clear documentation of work completion and next steps
+- **Blocking Issues**: Immediately document in main.md any issues that block other streams
+- **Resource Conflicts**: Use main.md to coordinate resource-intensive operations
+- **Success Metrics**: Each stream reports progress against defined success criteria
+
+## **Conflict Resolution**:
+- **Priority Order**: Alpha > Beta > Gamma > Delta > Epsilon > Zeta > Eta > Theta ... etc
+- **Resource Contention**: Higher priority stream gets access, others wait or pivot
+- **Deadlock Prevention**: Maximum 2-hour resource holds, then mandatory handoff
+- **Escalation Path**: Document unresolvable conflicts in main.md for human coordination
+
