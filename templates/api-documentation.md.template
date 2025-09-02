@@ -1,0 +1,468 @@
+# [API Name] Documentation
+
+> **MCP Integration**: Use `mcp__writing__structure_document --template technical_spec` to optimize this document structure for your target audience.
+
+## Executive Summary
+> **Auto-generated via MCP**: Run `mcp__writing__transform_narrative --audience executive` on the complete document to generate this section.
+
+[Business value proposition, integration benefits, and strategic impact]
+
+## Quick Start
+
+### Authentication
+```http
+POST /auth/token
+Content-Type: application/json
+
+{
+  "client_id": "your-client-id",
+  "client_secret": "your-client-secret"
+}
+```
+
+**Response:**
+```json
+{
+  "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+  "token_type": "Bearer",
+  "expires_in": 3600
+}
+```
+
+### Making Your First Request
+```http
+GET /api/v1/resources
+Authorization: Bearer [your-access-token]
+```
+
+## Core Concepts
+
+### [Primary Domain Object]
+Brief explanation of the main entity this API manages.
+
+**Key Relationships:**
+- [Entity] has many [Related Entities]
+- [Entity] belongs to [Parent Entity]
+
+## API Reference
+
+### Base URL
+```
+https://api.example.com/v1
+```
+
+### Authentication
+All API requests require a valid Bearer token in the Authorization header.
+
+### Rate Limiting
+- **Rate Limit**: 1000 requests per hour per API key
+- **Headers**: `X-RateLimit-Remaining`, `X-RateLimit-Reset`
+
+## Endpoints
+
+### GET /api/v1/[resources]
+> **Audience Adaptation**: Use `mcp__writing__tailor_persona --persona "Backend Developer"` to add implementation-specific details.
+
+**Purpose**: Retrieve a list of [resources] with pagination support
+
+**Parameters:**
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `limit` | integer | No | Number of results (1-100, default: 20) |
+| `offset` | integer | No | Skip this many results (default: 0) |
+| `filter` | string | No | Filter by [specific criteria] |
+| `sort` | string | No | Sort order: `created_at`, `-created_at` |
+
+**Example Request:**
+```http
+GET /api/v1/resources?limit=50&filter=active&sort=-created_at
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+```
+
+**Successful Response (200 OK):**
+```json
+{
+  "data": [
+    {
+      "id": "res_1234567890",
+      "name": "Example Resource",
+      "status": "active",
+      "created_at": "2024-01-15T10:30:00Z",
+      "updated_at": "2024-01-15T14:20:00Z"
+    }
+  ],
+  "pagination": {
+    "total": 150,
+    "limit": 50,
+    "offset": 0,
+    "has_more": true
+  }
+}
+```
+
+**Error Responses:**
+- **400 Bad Request**: Invalid parameters
+  ```json
+  {
+    "error": "invalid_parameter",
+    "message": "limit must be between 1 and 100",
+    "details": {
+      "parameter": "limit",
+      "received": 150,
+      "allowed_range": "1-100"
+    }
+  }
+  ```
+
+- **401 Unauthorized**: Invalid or missing authentication
+- **403 Forbidden**: Insufficient permissions
+- **429 Too Many Requests**: Rate limit exceeded
+
+### POST /api/v1/[resources]
+
+**Purpose**: Create a new [resource]
+
+**Request Body:**
+```json
+{
+  "name": "New Resource Name",
+  "description": "Optional description",
+  "configuration": {
+    "setting1": "value1",
+    "setting2": true
+  }
+}
+```
+
+**Successful Response (201 Created):**
+```json
+{
+  "id": "res_1234567891",
+  "name": "New Resource Name",
+  "status": "pending",
+  "created_at": "2024-01-15T15:30:00Z"
+}
+```
+
+### GET /api/v1/[resources]/{id}
+
+**Purpose**: Retrieve a specific [resource] by ID
+
+**Parameters:**
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes | Unique resource identifier |
+
+**Successful Response (200 OK):**
+```json
+{
+  "id": "res_1234567890",
+  "name": "Example Resource",
+  "description": "Resource description",
+  "status": "active",
+  "configuration": {
+    "setting1": "value1",
+    "setting2": true
+  },
+  "metadata": {
+    "created_by": "user_123",
+    "last_modified_by": "user_456"
+  },
+  "created_at": "2024-01-15T10:30:00Z",
+  "updated_at": "2024-01-15T14:20:00Z"
+}
+```
+
+**Error Responses:**
+- **404 Not Found**: Resource does not exist
+  ```json
+  {
+    "error": "resource_not_found",
+    "message": "Resource with id 'res_invalid' not found"
+  }
+  ```
+
+### PUT /api/v1/[resources]/{id}
+
+**Purpose**: Update an existing [resource]
+
+**Request Body:**
+```json
+{
+  "name": "Updated Resource Name",
+  "description": "Updated description",
+  "configuration": {
+    "setting1": "new_value1",
+    "setting2": false
+  }
+}
+```
+
+**Successful Response (200 OK):**
+```json
+{
+  "id": "res_1234567890",
+  "name": "Updated Resource Name",
+  "status": "active",
+  "updated_at": "2024-01-15T16:45:00Z"
+}
+```
+
+### DELETE /api/v1/[resources]/{id}
+
+**Purpose**: Delete a [resource]
+
+**Successful Response (204 No Content)**
+
+**Error Responses:**
+- **409 Conflict**: Resource cannot be deleted due to dependencies
+  ```json
+  {
+    "error": "delete_conflict",
+    "message": "Cannot delete resource with active dependencies",
+    "details": {
+      "dependent_resources": ["dep_123", "dep_456"]
+    }
+  }
+  ```
+
+## Schema Definitions
+
+### Resource Object
+```json
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier",
+      "example": "res_1234567890"
+    },
+    "name": {
+      "type": "string",
+      "description": "Display name",
+      "maxLength": 100
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "active", "inactive", "error"],
+      "description": "Current resource status"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp"
+    }
+  },
+  "required": ["id", "name", "status", "created_at"]
+}
+```
+
+## SDKs and Libraries
+
+### Node.js
+```bash
+npm install @yourcompany/api-client
+```
+
+```javascript
+import { APIClient } from '@yourcompany/api-client';
+
+const client = new APIClient({
+  apiKey: 'your-api-key',
+  baseURL: 'https://api.example.com/v1'
+});
+
+// Get resources
+const resources = await client.resources.list({
+  limit: 20,
+  filter: 'active'
+});
+
+// Create resource
+const newResource = await client.resources.create({
+  name: 'My Resource',
+  description: 'Resource description'
+});
+```
+
+### Python
+```bash
+pip install yourcompany-api-client
+```
+
+```python
+from yourcompany import APIClient
+
+client = APIClient(api_key='your-api-key')
+
+# Get resources
+resources = client.resources.list(limit=20, filter='active')
+
+# Create resource
+new_resource = client.resources.create(
+    name='My Resource',
+    description='Resource description'
+)
+```
+
+## Error Handling
+
+### Error Response Format
+All errors follow this consistent structure:
+```json
+{
+  "error": "error_code",
+  "message": "Human-readable error description",
+  "details": {
+    "additional": "context-specific information"
+  },
+  "request_id": "req_1234567890"
+}
+```
+
+### Common Error Codes
+| Code | HTTP Status | Description |
+|------|-------------|-------------|
+| `invalid_parameter` | 400 | Request parameter validation failed |
+| `authentication_required` | 401 | Valid authentication required |
+| `permission_denied` | 403 | Insufficient permissions |
+| `resource_not_found` | 404 | Requested resource does not exist |
+| `rate_limit_exceeded` | 429 | API rate limit exceeded |
+| `internal_error` | 500 | Unexpected server error |
+
+### Error Handling Best Practices
+```javascript
+try {
+  const resource = await client.resources.get('res_123');
+} catch (error) {
+  if (error.status === 404) {
+    console.log('Resource not found');
+  } else if (error.status === 429) {
+    // Handle rate limiting
+    const retryAfter = error.headers['retry-after'];
+    setTimeout(() => retryRequest(), retryAfter * 1000);
+  } else {
+    console.error('API Error:', error.message);
+  }
+}
+```
+
+## Webhooks
+
+### Setting Up Webhooks
+Configure webhook endpoints to receive real-time notifications:
+
+```http
+POST /api/v1/webhooks
+Content-Type: application/json
+
+{
+  "url": "https://your-app.com/webhooks/api",
+  "events": ["resource.created", "resource.updated", "resource.deleted"]
+}
+```
+
+### Webhook Payload
+```json
+{
+  "id": "evt_1234567890",
+  "type": "resource.created",
+  "created": "2024-01-15T10:30:00Z",
+  "data": {
+    "object": {
+      "id": "res_1234567890",
+      "name": "New Resource"
+    }
+  }
+}
+```
+
+## Testing and Development
+
+### Sandbox Environment
+Use the sandbox environment for development and testing:
+- **Base URL**: `https://api-sandbox.example.com/v1`
+- **Test Data**: Pre-populated with sample resources
+- **Rate Limits**: Relaxed for development
+
+### API Testing Tools
+```bash
+# Test with curl
+curl -X GET "https://api.example.com/v1/resources" \
+  -H "Authorization: Bearer your-token"
+
+# Test with HTTPie
+http GET api.example.com/v1/resources \
+  Authorization:"Bearer your-token"
+```
+
+## Performance and Best Practices
+
+### Optimization Tips
+- **Pagination**: Always use pagination for list endpoints
+- **Field Selection**: Request only needed fields when supported
+- **Caching**: Cache responses according to `Cache-Control` headers
+- **Compression**: Enable gzip compression for large responses
+
+### Rate Limiting Strategy
+```javascript
+// Implement exponential backoff for rate limit handling
+async function apiCallWithRetry(apiCall, maxRetries = 3) {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      return await apiCall();
+    } catch (error) {
+      if (error.status === 429 && attempt < maxRetries - 1) {
+        const delay = Math.pow(2, attempt) * 1000;
+        await new Promise(resolve => setTimeout(resolve, delay));
+      } else {
+        throw error;
+      }
+    }
+  }
+}
+```
+
+## Security Considerations
+
+### API Key Management
+- Store API keys securely (environment variables, secure vaults)
+- Rotate keys regularly
+- Use different keys for different environments
+- Monitor API key usage
+
+### Data Validation
+- Always validate input parameters
+- Sanitize data before processing
+- Use HTTPS for all API communications
+- Implement request signing for sensitive operations
+
+---
+
+## Stakeholder Communications
+
+### For Product Teams
+> **MCP Generation**: Use `mcp__writing__tailor_persona --persona "Product Manager"` to create product-focused documentation emphasizing user impact and business metrics.
+
+### For Operations Teams  
+> **MCP Generation**: Use `mcp__writing__tailor_persona --persona "DevOps Engineer"` to create operations-focused documentation emphasizing monitoring, scaling, and reliability.
+
+### For Executive Reporting
+> **MCP Generation**: Use `mcp__writing__transform_narrative --audience executive` to create executive summaries focusing on business value, integration benefits, and strategic impact.
+
+---
+
+## Support and Resources
+
+- **Developer Portal**: [https://developers.example.com]
+- **API Status Page**: [https://status.example.com]  
+- **Support Email**: [api-support@example.com]
+- **Community Forum**: [https://community.example.com]
+- **GitHub Repository**: [https://github.com/yourcompany/api-examples]
+
+## Changelog
+
+- **v1.2** (2024-01-15): Added webhook support, improved error handling
+- **v1.1** (2023-12-01): Added pagination, rate limiting headers
+- **v1.0** (2023-11-01): Initial API release
