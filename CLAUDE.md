@@ -1,80 +1,64 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with writing projects in this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with technical writing projects in this repository.
 
 ## Project Overview
 
-A comprehensive writing framework for creating high-quality how-to guides, tutorials, and instructional documentation with measurable quality gates, automated verification, and consistent standards for human-readable content.
+A comprehensive technical writing framework for creating high-quality API documentation, architectural designs, RFCs, and technical specifications with automated quality assurance, narrative transformation, and stakeholder-specific content adaptation using the integrated writing MCP.
 
 ## Essential Commands
 
-### Writing Environment Setup
+### Writing MCP Integration Setup
 ```bash
-# Check for required writing tools
-which vale || echo "Vale style checker not installed"
-which alex || echo "Alex inclusive language checker not installed"
-which write-good || echo "Write-good prose linter not installed"
+# The writing MCP is automatically available in Claude Code
+# No additional installation required - leverages integrated tools
 
-# Install writing tools (Node.js required)
-npm install -g write-good alex
-npm install -g @retextjs/retext-readability
+# Verify MCP availability
+claude-code --list-mcps | grep writing
 
-# Install Vale style checker
-wget https://github.com/errata-ai/vale/releases/download/v3.0.0/vale_3.0.0_Linux_64-bit.tar.gz
-tar -xzf vale_3.0.0_Linux_64-bit.tar.gz
-sudo mv vale /usr/local/bin/
-
-# Install Python-based analysis tools
-pip install textstat pypandoc proselint language-tool-python
-pip install readability-lxml markdown2 
+# Test writing MCP functions
+claude-code --test-mcp writing
 ```
 
-### Document Creation & Management
+### Technical Document Creation & Management
 ```bash
-# Initialize new document from template
-./scripts/write-init.sh howto "Installing Docker on Ubuntu"
-./scripts/write-init.sh tutorial "Building Your First Web App"
-./scripts/write-init.sh guide "Troubleshooting Network Issues"
+# Create technical documents using Writing MCP
+# Transform content for specific audiences
+mcp__writing__transform_narrative --audience executive --content "$(cat technical-spec.md)"
+mcp__writing__transform_narrative --audience cto --content "$(cat api-design.md)"
 
-# Check document status and metrics
-./scripts/write-status.sh docs/howto-docker.md
+# Create structured technical documentation
+mcp__writing__structure_document --template technical_spec --audience developers --content "$(cat draft.md)"
+mcp__writing__structure_document --template executive_brief --audience board --content "$(cat project-status.md)"
 
-# Preview formatted output
-./scripts/write-preview.sh docs/howto-docker.md --format html
-pandoc docs/howto-docker.md -o preview.html --standalone
+# Tailor content for specific personas
+mcp__writing__tailor_persona --persona '{"role":"DevOps Engineer","priorities":["scalability","reliability"]}' --content "$(cat deployment-guide.md)"
 
-# Convert between formats
-pandoc docs/howto-docker.md -o docs/howto-docker.pdf
-pandoc docs/howto-docker.md -o docs/howto-docker.docx
+# Process files directly through writing agents
+mcp__writing__process_file --file_path docs/api-spec.md --agent structure
+mcp__writing__process_file --file_path docs/architecture.md --agent narrative --parameters '{"audience":"technical"}'
 ```
 
-### Quality Checks & Validation
+### Quality Assurance & Validation
 ```bash
-# Readability analysis
-textstat docs/howto-docker.md --metrics all
-readability docs/howto-docker.md --target-audience technical
+# Use Writing MCP for comprehensive document optimization
+# Structure optimization for clarity and impact
+mcp__writing__structure_document --content "$(cat technical-doc.md)" --template technical_spec --audience technical
 
-# Grammar and style checking
-vale docs/howto-docker.md
-write-good docs/howto-docker.md --parse
-proselint docs/howto-docker.md
+# Narrative transformation for business stakeholders  
+mcp__writing__transform_narrative --content "$(cat engineering-update.md)" --audience executive --create_summary true
 
-# Inclusive language check
-alex docs/howto-docker.md --why
+# Persona-specific content adaptation
+mcp__writing__tailor_persona --content "$(cat deployment-guide.md)" --persona '{"role":"Site Reliability Engineer","communication_style":"direct","priorities":["uptime","performance"]}'
 
-# QUALITY GATE: Full document validation (equivalent to pytest --cov)
-./scripts/write-check.sh all docs/howto-docker.md --strict
+# Data visualization narrative (for metrics/charts in technical docs)
+mcp__writing__visualize_data --data "$(cat metrics.csv)" --objective "Show system performance trends" --audience technical
 
-# Check specific quality metrics
-./scripts/write-check.sh readability docs/howto-docker.md --flesch-target 65
-./scripts/write-check.sh structure docs/howto-docker.md --template howto
-./scripts/write-check.sh grammar docs/howto-docker.md --min-score 95
-
-# Batch validation for entire documentation
-./scripts/write-check.sh all docs/ --recursive --report
-
-# Link validation
-markdown-link-check docs/howto-docker.md
+# QUALITY GATE: MCP-powered document processing pipeline
+# Process through all writing agents for comprehensive improvement
+mcp__writing__process_file --file_path docs/technical-spec.md --agent structure
+mcp__writing__process_file --file_path docs/technical-spec.md --agent narrative
+mcp__writing__process_file --file_path docs/technical-spec.md --agent persona
 ```
 
 ### Document Revision & Version Control
@@ -92,126 +76,122 @@ git diff docs/howto-docker.md | ./scripts/writing-diff.sh
 ./scripts/write-changelog.sh docs/howto-docker.md
 ```
 
-## Document Architecture & Structure
+## Technical Document Architecture & Stakeholder Alignment
 
-### Core Document Types
+### Core Technical Document Types
 
-#### 1. How-To Guides
-**Purpose**: Step-by-step instructions for completing specific tasks
+#### 1. API Documentation
+**Purpose**: Comprehensive reference for developers using APIs
+**MCP Integration**: `mcp__writing__structure_document --template technical_spec`
 **Structure**:
 ```markdown
-# How to [Achieve Specific Goal]
+# [API Name] Documentation
 
-## Prerequisites
-- Required knowledge
-- Required tools/access
-- Time estimate
+## Quick Start
+Essential information for immediate usage
 
-## Overview
-Brief description of what will be accomplished
+## Authentication
+Security and access patterns
 
-## Steps
-### Step 1: [Action]
-Clear instruction with:
-- Command or action
-- Expected result
-- Troubleshooting tips
+## Endpoints
+### GET /api/resource
+- **Purpose**: [Clear business value]
+- **Parameters**: [Type-safe specifications]
+- **Response**: [Schema with examples]
+- **Error Codes**: [Actionable error handling]
 
-### Step 2: [Action]
-...
+## SDKs and Libraries
+Language-specific implementations
 
-## Verification
-How to verify success
-
-## Troubleshooting
-Common issues and solutions
-
-## Next Steps
-Related guides or advanced topics
+## Rate Limits and Performance
+Operational considerations
 ```
 
-#### 2. Tutorials
-**Purpose**: Learning-oriented guides that teach concepts through examples
+#### 2. Architecture Design Documents (ADDs)
+**Purpose**: Technical decisions and system design rationale  
+**MCP Integration**: `mcp__writing__tailor_persona` for different technical roles
 **Structure**:
 ```markdown
-# Tutorial: [Learning Objective]
+# ADD-001: [System Component] Architecture
 
-## What You'll Learn
-- Learning outcome 1
-- Learning outcome 2
+## Context and Problem Statement
+Business and technical drivers
 
-## Before You Begin
-Prerequisites and setup
+## Decision Drivers
+- Performance requirements
+- Scalability needs  
+- Security considerations
+- Operational constraints
 
-## Part 1: [Concept]
-### Understanding [Topic]
-Explanation with examples
+## Considered Options
+### Option 1: [Approach]
+- **Pros**: [Benefits with stakeholder impact]
+- **Cons**: [Risks and mitigation strategies]
+- **Implementation effort**: [Resource implications]
 
-### Try It Yourself
-Hands-on exercise
+## Decision Outcome
+Chosen option with rationale
 
-## Part 2: [Building on Concept]
-...
+## Implementation Plan
+Concrete steps and timeline
+
+## Consequences
+Positive and negative implications
+```
+
+#### 3. RFC (Request for Comments)
+**Purpose**: Proposals for significant changes requiring consensus
+**MCP Integration**: `mcp__writing__transform_narrative` for executive summary
+**Structure**:
+```markdown
+# RFC-001: [Proposal Title]
 
 ## Summary
-Key takeaways
+**Executive Brief** (MCP-generated for leadership):
+[Business impact and resource requirements]
 
-## Practice Exercises
-Self-assessment questions
+## Motivation
+Problem statement and business value
+
+## Detailed Design
+Technical specification with diagrams
+
+## Implementation Strategy
+Rollout plan and success metrics
+
+## Risk Assessment
+Potential issues and mitigation plans
+
+## Alternative Approaches
+Rejected options with reasoning
 ```
 
-#### 3. Troubleshooting Guides
-**Purpose**: Problem-solving documentation
-**Structure**:
-```markdown
-# Troubleshooting: [Problem Area]
+### Quality Standards & Stakeholder Communication
 
-## Quick Diagnosis
-Flowchart or decision tree
+#### Narrative Transformation Quality (MCP-Powered)
+- **Executive Summaries**: Business impact clearly articulated
+- **Technical Depth**: Appropriate complexity for audience
+- **Stakeholder Alignment**: Content matches persona priorities
+- **Decision Support**: Clear recommendations with rationale
 
-## Common Issues
+#### Multi-Audience Optimization
+- **Technical Teams**: Detailed implementation guidance
+- **Engineering Leadership**: Resource and timeline implications
+- **Executive Stakeholders**: Business value and risk assessment
+- **Cross-functional Teams**: Integration and dependency clarity
 
-### Issue: [Symptom]
-**Cause**: Explanation
-**Solution**: Step-by-step fix
-**Prevention**: How to avoid
+#### MCP Quality Gates (Automated)
+- **Structure Optimization**: Template compliance with narrative flow
+- **Persona Adaptation**: Content appropriateness for target roles
+- **Visualization Integration**: Data storytelling effectiveness
+- **Document Processing Pipeline**: Multi-agent improvement validation
 
-## Advanced Diagnostics
-Detailed investigation steps
-
-## When to Escalate
-Criteria for seeking help
-```
-
-### Quality Standards & Metrics
-
-#### Readability Metrics (Enforced)
-- **Flesch Reading Ease**: 
-  - How-to guides: 60-70 (high school level)
-  - Tutorials: 50-60 (some college)
-  - Technical reference: 30-50 (college/graduate)
-- **Gunning Fog Index**: <12 for all documentation
-- **Average Sentence Length**: 15-20 words
-- **Average Paragraph Length**: 3-5 sentences
-
-#### Structure Compliance
-- **Required Sections**: All template sections must be present
-- **Heading Hierarchy**: Proper H1→H2→H3 nesting
-- **List Formatting**: Consistent bullet/number usage
-- **Code Block Formatting**: Language specification required
-
-#### Grammar & Style (Vale Rules)
-- **Passive Voice**: <10% of sentences
-- **Sentence Variety**: Mix of simple, compound, complex
-- **Technical Terms**: Defined on first use
-- **Acronyms**: Spelled out initially
-- **Consistency**: Same terminology throughout
-
-#### Inclusive Language (Alex)
-- **Gendered Language**: Neutral alternatives required
-- **Ableist Language**: Accessible alternatives
-- **Cultural Sensitivity**: Respectful terminology
-- **Technical Jargon**: Plain language alternatives when possible
+#### Technical Writing Standards
+- **API Documentation**: Complete, testable examples
+- **Architecture Decisions**: Clear rationale and trade-offs
+- **RFC Proposals**: Comprehensive impact analysis
+- **Code Integration**: Live examples with validation
+- **Schema Accuracy**: Type-safe documentation
 
 ## Writing Workflow & Best Practices
 

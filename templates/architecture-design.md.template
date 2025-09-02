@@ -1,0 +1,702 @@
+# ADD-[Number]: [System/Component] Architecture Design
+
+> **MCP Integration**: This Architecture Design Document (ADD) template uses the Writing MCP for multi-stakeholder technical communication.
+
+## Executive Summary
+> **Auto-generated**: Run `mcp__writing__transform_narrative --audience executive --content "$(cat this-add.md)"` to generate executive-focused summary.
+
+**Strategic Impact**: [To be generated - business value and competitive advantage]  
+**Investment Required**: [To be generated - resource and timeline summary]  
+**Technical Risk**: [To be generated - risk assessment for business leadership]
+
+---
+
+## Document Metadata
+
+- **ADD Number**: [Number]
+- **System/Component**: [Name of system being designed]
+- **Authors**: [Technical leads and architects]
+- **Status**: Draft | Under Review | Approved | Implemented | Superseded
+- **Created**: [YYYY-MM-DD]
+- **Last Updated**: [YYYY-MM-DD]
+- **Review Deadline**: [YYYY-MM-DD]
+- **Implementation Target**: [Release/Quarter]
+
+**Technical Reviewers**:
+- **Principal Architects**: [Names]
+- **Senior Engineers**: [Names]  
+- **Security Engineer**: [Name]
+- **DevOps/Platform Team**: [Names]
+
+**Business Stakeholders**:
+- **Product Owner**: [Name]
+- **Engineering Manager**: [Name]
+- **Technical Program Manager**: [Name]
+
+---
+
+## Context and Problem Statement
+
+### Business Context
+[Business drivers and strategic objectives that necessitate this architectural decision]
+
+**Business Goals**:
+- [Strategic goal 1 with success metrics]
+- [Strategic goal 2 with success metrics]
+- [Strategic goal 3 with success metrics]
+
+### Technical Context
+[Current technical landscape and architectural constraints]
+
+**Current Architecture**:
+```mermaid
+graph TB
+    A[Client Applications] --> B[API Gateway]
+    B --> C[Monolithic Service]
+    C --> D[(Shared Database)]
+```
+
+**Technical Debt and Limitations**:
+- [Specific limitation 1 with impact on scalability/maintainability]
+- [Specific limitation 2 with impact on development velocity]
+- [Specific limitation 3 with impact on operational efficiency]
+
+### Problem Statement
+[Clear articulation of the technical and business problem this architecture solves]
+
+**Functional Requirements**:
+- [Requirement 1: What the system must do]
+- [Requirement 2: What the system must do]
+- [Requirement 3: What the system must do]
+
+**Non-Functional Requirements**:
+- **Performance**: [Response time, throughput, latency requirements]
+- **Scalability**: [Expected load patterns and growth projections]
+- **Reliability**: [Availability targets, MTTR requirements]
+- **Security**: [Authentication, authorization, data protection needs]
+- **Compliance**: [Regulatory or industry standards to meet]
+
+---
+
+## Decision Drivers
+
+### Technical Drivers
+- **Scalability Requirements**: [Current vs. projected scale requirements]
+- **Performance Requirements**: [Latency, throughput, concurrent user targets]
+- **Development Velocity**: [Team productivity and deployment frequency goals]
+- **Operational Excellence**: [Monitoring, debugging, incident response improvements]
+- **Technology Evolution**: [Need to adopt new technologies or retire legacy systems]
+
+### Business Drivers  
+- **Time to Market**: [Pressure to deliver features faster]
+- **Cost Optimization**: [Infrastructure, development, or operational cost concerns]
+- **Risk Mitigation**: [Business continuity, security, or compliance requirements]
+- **Competitive Advantage**: [Technical capabilities that differentiate the product]
+- **Developer Experience**: [Team satisfaction and retention considerations]
+
+### Constraints
+- **Technical Constraints**: [Technology limitations, legacy system dependencies]
+- **Resource Constraints**: [Team size, skill availability, budget limitations]
+- **Timeline Constraints**: [Hard deadlines, release schedule dependencies]
+- **Compliance Constraints**: [Regulatory requirements, security policies]
+
+---
+
+## Architecture Options
+
+### Option 1: [Architecture Option Name] (Recommended)
+
+#### Overview
+[High-level description of the recommended architecture approach]
+
+```mermaid
+graph TB
+    A[Web Clients] --> B[Load Balancer]
+    B --> C[API Gateway]
+    C --> D[Service A]
+    C --> E[Service B]
+    C --> F[Service C]
+    D --> G[(Database A)]
+    E --> H[(Database B)]
+    F --> I[(Database C)]
+    D --> J[Message Queue]
+    E --> J
+    F --> J
+```
+
+#### Detailed Design
+
+**Core Components**:
+1. **[Component 1 Name]**
+   - **Responsibilities**: [What this component does]
+   - **Technology Stack**: [Specific technologies and frameworks]
+   - **Interfaces**: [APIs, message formats, communication patterns]
+   - **Data Management**: [Data storage, access patterns, consistency requirements]
+
+2. **[Component 2 Name]**
+   - **Responsibilities**: [What this component does]
+   - **Technology Stack**: [Specific technologies and frameworks]
+   - **Interfaces**: [APIs, message formats, communication patterns]
+   - **Data Management**: [Data storage, access patterns, consistency requirements]
+
+**Communication Patterns**:
+- **Synchronous Communication**: [REST APIs, GraphQL, RPC details]
+- **Asynchronous Communication**: [Message queues, event streaming, pub/sub]
+- **Data Consistency**: [Eventual consistency, transactions, saga patterns]
+
+#### Pros
+- **[Advantage 1]**: [Specific benefit with measurable impact]
+- **[Advantage 2]**: [Specific benefit with measurable impact]  
+- **[Advantage 3]**: [Specific benefit with measurable impact]
+
+#### Cons
+- **[Disadvantage 1]**: [Specific limitation with impact assessment]
+- **[Disadvantage 2]**: [Specific limitation with impact assessment]
+- **[Disadvantage 3]**: [Specific limitation with impact assessment]
+
+#### Implementation Complexity
+- **Development Effort**: [Estimated development time and team requirements]
+- **Infrastructure Changes**: [Required infrastructure modifications]
+- **Migration Path**: [How to transition from current architecture]
+- **Risk Level**: High | Medium | Low [with key risk factors]
+
+### Option 2: [Alternative Architecture Name]
+
+#### Overview
+[High-level description of alternative approach]
+
+#### Pros
+- **[Advantage 1]**: [Benefit with stakeholder impact]
+- **[Advantage 2]**: [Benefit with stakeholder impact]
+
+#### Cons  
+- **[Disadvantage 1]**: [Limitation with stakeholder impact]
+- **[Disadvantage 2]**: [Limitation with stakeholder impact]
+
+#### Implementation Complexity
+[Effort and risk assessment compared to recommended option]
+
+#### Why Not Selected
+[Clear reasoning for rejecting this alternative]
+
+### Option 3: [Another Alternative or "Status Quo"]
+
+[Similar format to Option 2]
+
+---
+
+## Detailed Architecture Design
+
+### System Architecture
+
+#### High-Level Architecture
+```mermaid
+graph TB
+    subgraph "External"
+        U[Users]
+        E[External APIs]
+    end
+    
+    subgraph "Presentation Tier"
+        W[Web App]
+        M[Mobile App]
+    end
+    
+    subgraph "API Gateway"
+        G[Gateway Service]
+        A[Auth Service]
+    end
+    
+    subgraph "Business Logic Tier"
+        S1[User Service]
+        S2[Order Service]  
+        S3[Payment Service]
+        S4[Inventory Service]
+    end
+    
+    subgraph "Data Tier"
+        D1[(User DB)]
+        D2[(Order DB)]
+        D3[(Payment DB)]
+        D4[(Inventory DB)]
+        C[(Cache)]
+    end
+    
+    subgraph "Infrastructure"
+        Q[Message Queue]
+        L[Logging]
+        Mon[Monitoring]
+    end
+```
+
+#### Component Interactions
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant G as API Gateway
+    participant A as Auth Service
+    participant O as Order Service
+    participant P as Payment Service
+    participant I as Inventory Service
+    
+    U->>G: Create Order Request
+    G->>A: Validate Token
+    A-->>G: Token Valid
+    G->>O: Create Order
+    O->>I: Check Inventory
+    I-->>O: Inventory Available
+    O->>P: Process Payment
+    P-->>O: Payment Success
+    O-->>G: Order Created
+    G-->>U: Order Confirmation
+```
+
+### Data Architecture
+
+#### Data Models
+```sql
+-- Core domain entities
+CREATE TABLE users (
+    id UUID PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE orders (
+    id UUID PRIMARY KEY,
+    user_id UUID REFERENCES users(id),
+    status VARCHAR(50) NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL
+);
+```
+
+#### Data Flow
+```mermaid
+graph LR
+    A[Input Data] --> B[Validation Layer]
+    B --> C[Business Logic]
+    C --> D[Data Transformation]
+    D --> E[(Primary Storage)]
+    E --> F[Event Generation]
+    F --> G[Message Queue]
+    G --> H[Secondary Processing]
+    H --> I[(Analytics Storage)]
+```
+
+#### Data Consistency Strategy
+- **Strong Consistency**: [Where ACID transactions are required]
+- **Eventual Consistency**: [Where eventual consistency is acceptable]
+- **Conflict Resolution**: [How data conflicts are handled]
+- **Data Synchronization**: [Cross-service data sync strategies]
+
+### API Design
+
+#### RESTful API Standards
+```yaml
+# OpenAPI specification example
+openapi: 3.0.0
+info:
+  title: [System Name] API
+  version: 1.0.0
+paths:
+  /api/v1/users:
+    get:
+      summary: List users
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+```
+
+#### Event-Driven Architecture
+```json
+{
+  "eventType": "user.created",
+  "eventId": "uuid-v4",
+  "timestamp": "2024-01-15T10:30:00Z",
+  "source": "user-service",
+  "data": {
+    "userId": "user-uuid",
+    "email": "user@example.com"
+  },
+  "metadata": {
+    "version": "1.0",
+    "correlationId": "request-uuid"
+  }
+}
+```
+
+---
+
+## Implementation Strategy
+
+### Migration Approach
+
+#### Phase 1: Foundation ([X weeks])
+**Objectives**: Establish core infrastructure and foundational services
+**Deliverables**:
+- Infrastructure setup (Kubernetes, databases, message queues)
+- Core authentication and authorization service
+- API gateway implementation
+- Basic monitoring and logging
+
+**Success Criteria**:
+- Infrastructure can handle baseline load
+- Authentication flow working end-to-end
+- Monitoring dashboards operational
+
+#### Phase 2: Service Extraction ([X weeks])  
+**Objectives**: Extract and implement core business services
+**Deliverables**:
+- [Service A] implementation and deployment
+- [Service B] implementation and deployment
+- Data migration tools and procedures
+- Integration testing suite
+
+**Success Criteria**:
+- Services handle expected load with target performance
+- Data consistency maintained during migration
+- All integration tests passing
+
+#### Phase 3: Feature Parity ([X weeks])
+**Objectives**: Achieve full feature parity with existing system
+**Deliverables**:
+- Remaining service implementations
+- Feature flags for gradual rollout
+- Performance optimization
+- Security hardening
+
+**Success Criteria**:
+- 100% feature parity achieved
+- Performance meets or exceeds current system
+- Security review passed
+
+#### Phase 4: Optimization ([X weeks])
+**Objectives**: Performance tuning and operational readiness
+**Deliverables**:
+- Performance optimization
+- Operational runbooks
+- Team training completion
+- Production readiness review
+
+**Success Criteria**:
+- Performance targets met under production load
+- Teams trained and operational procedures validated
+- Go-live approval obtained
+
+### Deployment Strategy
+
+#### Infrastructure as Code
+```yaml
+# Kubernetes deployment example
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: user-service
+  template:
+    metadata:
+      labels:
+        app: user-service
+    spec:
+      containers:
+      - name: user-service
+        image: user-service:1.0.0
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: url
+```
+
+#### CI/CD Pipeline
+```yaml
+# GitHub Actions workflow example
+name: Deploy Service
+on:
+  push:
+    branches: [main]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run tests
+      run: npm test
+    - name: Build image
+      run: docker build -t service:${{ github.sha }} .
+    - name: Deploy to staging
+      run: kubectl apply -f k8s/staging/
+    - name: Run integration tests
+      run: npm run test:integration
+    - name: Deploy to production
+      run: kubectl apply -f k8s/production/
+```
+
+---
+
+## Operational Considerations
+
+### Monitoring and Observability
+> **Operations Focus**: Use `mcp__writing__tailor_persona --persona "Site Reliability Engineer"` to generate detailed operational guidance.
+
+#### Key Metrics
+- **Application Metrics**: [Response time, error rate, throughput]
+- **Infrastructure Metrics**: [CPU, memory, disk, network utilization]
+- **Business Metrics**: [User activity, transaction volume, revenue impact]
+
+#### Monitoring Stack
+- **Application Performance Monitoring**: [Tool and configuration]
+- **Infrastructure Monitoring**: [Tool and configuration]
+- **Log Aggregation**: [Centralized logging strategy]
+- **Distributed Tracing**: [Request tracing across services]
+
+#### Alerting Strategy
+```yaml
+# Prometheus alerting rules example
+groups:
+  - name: user-service
+    rules:
+    - alert: HighErrorRate
+      expr: rate(http_requests_total{status=~"5.."}[5m]) > 0.1
+      for: 2m
+      annotations:
+        summary: High error rate detected
+        description: Error rate is {{ $value }} requests/second
+```
+
+### Security Architecture
+> **Security Focus**: Use `mcp__writing__tailor_persona --persona "Security Engineer"` to generate detailed security assessment.
+
+#### Security Controls
+- **Authentication**: [Identity provider, token management, MFA requirements]
+- **Authorization**: [RBAC, ABAC, policy enforcement points]
+- **Network Security**: [VPC, firewalls, network segmentation]
+- **Data Protection**: [Encryption at rest, in transit, key management]
+
+#### Threat Model
+| Threat | Impact | Likelihood | Mitigation |
+|--------|--------|------------|------------|
+| **[Threat 1]** | High/Med/Low | High/Med/Low | [Specific countermeasures] |
+| **[Threat 2]** | High/Med/Low | High/Med/Low | [Specific countermeasures] |
+
+### Disaster Recovery
+- **Backup Strategy**: [What data is backed up, frequency, retention]
+- **Recovery Procedures**: [Step-by-step recovery process]
+- **RTO/RPO Targets**: [Recovery time and point objectives]
+- **DR Testing**: [How and when DR procedures are tested]
+
+---
+
+## Performance and Scalability
+
+### Performance Requirements
+| Metric | Current | Target | Rationale |
+|--------|---------|---------|-----------|
+| **API Response Time** | [Current p95] | [Target p95] | [Business justification] |
+| **Concurrent Users** | [Current capacity] | [Target capacity] | [Growth projection] |
+| **Database Query Time** | [Current p95] | [Target p95] | [User experience impact] |
+| **Memory Usage** | [Current baseline] | [Target usage] | [Cost optimization] |
+
+### Scalability Patterns
+- **Horizontal Scaling**: [Auto-scaling configuration, load balancing]
+- **Vertical Scaling**: [Resource allocation, performance profiling]
+- **Data Partitioning**: [Sharding strategy, data distribution]
+- **Caching Strategy**: [Cache layers, invalidation policies, consistency]
+
+### Load Testing Strategy
+```bash
+# Load testing with k6
+import http from 'k6/http';
+import { check } from 'k6';
+
+export let options = {
+  stages: [
+    { duration: '5m', target: 100 },
+    { duration: '10m', target: 200 },
+    { duration: '5m', target: 0 }
+  ]
+};
+
+export default function() {
+  let response = http.get('https://api.example.com/users');
+  check(response, {
+    'response time < 500ms': (r) => r.timings.duration < 500,
+    'status is 200': (r) => r.status === 200
+  });
+}
+```
+
+---
+
+## Quality Attributes
+
+### Reliability
+- **Availability Target**: [99.9%, 99.95%, 99.99%]
+- **Failure Modes**: [How the system can fail and graceful degradation]
+- **Circuit Breakers**: [When and how to implement circuit breaking]
+- **Retry Strategies**: [Exponential backoff, retry limits, error handling]
+
+### Maintainability
+- **Code Organization**: [Module structure, dependency management]
+- **Documentation Standards**: [API docs, architecture diagrams, runbooks]
+- **Testing Strategy**: [Unit, integration, contract, end-to-end testing]
+- **Refactoring Guidelines**: [When and how to refactor components]
+
+### Usability
+- **Developer Experience**: [API design, documentation, tooling]
+- **Operational Experience**: [Monitoring, debugging, troubleshooting]
+- **Integration Experience**: [Third-party integrations, SDK design]
+
+---
+
+## Risk Assessment and Mitigation
+
+### Technical Risks
+
+| Risk | Probability | Impact | Mitigation Strategy | Owner |
+|------|------------|--------|-------------------|--------|
+| **[Technical Risk 1]** | High/Med/Low | High/Med/Low | [Specific mitigation plan] | [Team/Person] |
+| **[Technical Risk 2]** | High/Med/Low | High/Med/Low | [Specific mitigation plan] | [Team/Person] |
+
+### Operational Risks
+
+| Risk | Probability | Impact | Mitigation Strategy | Owner |
+|------|------------|--------|-------------------|--------|
+| **[Operational Risk 1]** | High/Med/Low | High/Med/Low | [Specific mitigation plan] | [Team/Person] |
+| **[Operational Risk 2]** | High/Med/Low | High/Med/Low | [Specific mitigation plan] | [Team/Person] |
+
+### Business Continuity
+- **Service Dependencies**: [Critical path analysis, dependency mapping]
+- **Failure Scenarios**: [What happens when key components fail]
+- **Recovery Procedures**: [Step-by-step recovery processes]
+- **Communication Plans**: [How to communicate outages to stakeholders]
+
+---
+
+## Cost Analysis
+
+### Infrastructure Costs
+| Component | Current Monthly Cost | Projected Monthly Cost | Notes |
+|-----------|---------------------|----------------------|-------|
+| **Compute** | $[current] | $[projected] | [Scaling assumptions] |
+| **Storage** | $[current] | $[projected] | [Data growth assumptions] |
+| **Network** | $[current] | $[projected] | [Traffic growth assumptions] |
+| **Total** | $[current total] | $[projected total] | |
+
+### Development Costs
+- **Development Time**: [Total engineering effort in person-months]
+- **Infrastructure Setup**: [DevOps effort for new infrastructure]
+- **Training and Documentation**: [Time for team onboarding]
+- **Testing and Quality Assurance**: [QA and testing effort]
+
+### Cost-Benefit Analysis
+- **Implementation Cost**: $[total implementation cost]
+- **Annual Operational Savings**: $[projected savings]
+- **ROI Timeline**: [Months to break even]
+- **Risk-Adjusted NPV**: $[net present value considering risks]
+
+---
+
+## Decision Outcome
+
+### Recommended Decision
+**Selected Option**: [Option 1 Name]
+
+**Rationale**:
+- [Primary reason for selection with business/technical justification]
+- [Secondary reason with supporting evidence]
+- [Risk assessment conclusion]
+
+### Acceptance Criteria
+This architecture is considered successfully implemented when:
+- [ ] All functional requirements met with performance targets
+- [ ] Security review completed and vulnerabilities addressed
+- [ ] Operational procedures documented and teams trained
+- [ ] Production deployment successful with monitoring validated
+- [ ] Business metrics show expected improvement
+
+### Next Steps
+1. **Technical Approval**: [Engineering leadership sign-off by [Date]]
+2. **Resource Allocation**: [Team assignments and timeline confirmation]
+3. **Detailed Planning**: [Sprint planning and story creation]
+4. **Risk Review**: [Security and architecture review completion]
+5. **Implementation Kickoff**: [Development work begins [Date]]
+
+---
+
+## Consequences
+
+### Positive Consequences
+- [Expected benefit 1 with measurable impact]
+- [Expected benefit 2 with measurable impact]
+- [Expected benefit 3 with measurable impact]
+
+### Negative Consequences
+- [Trade-off 1 with impact assessment]
+- [Trade-off 2 with mitigation plan]
+- [Trade-off 3 with acceptance rationale]
+
+### Long-term Implications
+- **Technical Debt**: [How this affects future technical decisions]
+- **Team Structure**: [Organizational changes required]
+- **Skill Requirements**: [New competencies needed]
+- **Architecture Evolution**: [How this enables future architectural changes]
+
+---
+
+## Appendices
+
+### Appendix A: Performance Benchmarks
+[Detailed performance test results and analysis]
+
+### Appendix B: Security Review
+[Comprehensive security assessment and threat model]
+
+### Appendix C: Cost Modeling
+[Detailed cost projections and ROI calculations]
+
+### Appendix D: Alternative Analysis
+[In-depth analysis of rejected alternatives]
+
+---
+
+## Stakeholder Communication
+
+### For Engineering Leadership
+> **MCP Generation**: `mcp__writing__transform_narrative --audience cto --content "$(cat this-add.md)"`
+
+### For Product Teams
+> **MCP Generation**: `mcp__writing__tailor_persona --persona "Product Manager" --content "$(cat this-add.md)"`
+
+### For Executive Stakeholders
+> **MCP Generation**: `mcp__writing__transform_narrative --audience executive --content "$(cat this-add.md)"`
+
+### For Operations Teams
+> **MCP Generation**: `mcp__writing__tailor_persona --persona "DevOps Engineer" --content "$(cat this-add.md)"`

@@ -1,0 +1,347 @@
+# RFC-[Number]: [Proposal Title]
+
+> **MCP Integration**: This template leverages the Writing MCP for multi-stakeholder communication. Use the commands below to generate audience-specific versions.
+
+## Executive Summary
+> **Auto-generated**: Run `mcp__writing__transform_narrative --audience executive --create_summary true` to generate this section from the complete RFC.
+
+**Business Impact**: [To be generated - key business benefits and resource requirements]  
+**Decision Required**: [To be generated - what executive decision is needed and by when]  
+**Risk Level**: [To be generated - high/medium/low with key risk factors]
+
+---
+
+## Metadata
+
+- **RFC Number**: [Number]
+- **Title**: [Proposal Title]
+- **Author(s)**: [Name(s) and email(s)]
+- **Status**: Draft | Under Review | Approved | Rejected | Superseded
+- **Created**: [YYYY-MM-DD]
+- **Last Updated**: [YYYY-MM-DD]
+- **Review Deadline**: [YYYY-MM-DD]
+- **Implementation Target**: [Quarter/Release]
+
+**Stakeholders**:
+- **Decision Makers**: [CTO, VP Engineering, etc.]
+- **Technical Reviewers**: [Senior Engineers, Architects]
+- **Implementation Teams**: [Team names]
+- **Affected Teams**: [All teams impacted by this change]
+
+---
+
+## Problem Statement
+
+### Current Situation
+[Clear description of the current state and its limitations]
+
+**Pain Points**:
+- [Specific issue 1 with measurable impact]
+- [Specific issue 2 with measurable impact]
+- [Specific issue 3 with measurable impact]
+
+**Quantified Impact**:
+- **Performance**: [Current metrics - response times, throughput, error rates]
+- **Developer Productivity**: [Time spent on maintenance, deployment friction]
+- **Business Cost**: [Infrastructure costs, support overhead, opportunity cost]
+- **User Experience**: [Customer-facing impacts, SLA compliance]
+
+### Success Criteria
+**Primary Goals**:
+- [Measurable outcome 1 with target metrics]
+- [Measurable outcome 2 with target metrics]
+- [Measurable outcome 3 with target metrics]
+
+**Secondary Goals**:
+- [Additional benefit 1]
+- [Additional benefit 2]
+
+---
+
+## Proposed Solution
+
+### High-Level Approach
+[Executive-friendly overview of the solution approach]
+
+### Technical Design
+
+#### Architecture Overview
+```mermaid
+graph TD
+    A[Current State] --> B[Migration Phase 1]
+    B --> C[Migration Phase 2]
+    C --> D[Target State]
+```
+
+[Detailed technical design with diagrams, component interactions, and data flows]
+
+#### Key Components
+1. **[Component 1]**
+   - **Purpose**: [What it does and why]
+   - **Technology**: [Implementation approach]
+   - **Interfaces**: [How other components interact with it]
+
+2. **[Component 2]**
+   - **Purpose**: [What it does and why]
+   - **Technology**: [Implementation approach]
+   - **Interfaces**: [How other components interact with it]
+
+#### Data Model Changes
+[Schema changes, migration requirements, backward compatibility considerations]
+
+#### API Design
+[New endpoints, changes to existing APIs, versioning strategy]
+
+---
+
+## Implementation Plan
+
+### Timeline and Milestones
+
+| Phase | Duration | Key Deliverables | Success Metrics |
+|-------|----------|------------------|-----------------|
+| **Phase 1**: [Name] | [X weeks] | [Deliverable 1], [Deliverable 2] | [Metric 1], [Metric 2] |
+| **Phase 2**: [Name] | [X weeks] | [Deliverable 3], [Deliverable 4] | [Metric 3], [Metric 4] |
+| **Phase 3**: [Name] | [X weeks] | [Deliverable 5], [Deliverable 6] | [Metric 5], [Metric 6] |
+
+**Total Timeline**: [X months]
+**Go-Live Target**: [Date]
+
+### Resource Requirements
+
+**Engineering Resources**:
+- **Backend Engineering**: [X FTE for Y weeks] - [Specific expertise needed]
+- **Frontend Engineering**: [X FTE for Y weeks] - [Specific expertise needed]
+- **DevOps/Infrastructure**: [X FTE for Y weeks] - [Specific expertise needed]
+- **QA/Testing**: [X FTE for Y weeks] - [Testing strategy and coverage]
+
+**Other Resources**:
+- **Product Management**: [X FTE] - [Requirements definition, stakeholder coordination]
+- **Design**: [X FTE] - [UI/UX changes, user research]
+- **Technical Writing**: [X FTE] - [Documentation, training materials]
+
+**External Dependencies**:
+- [Vendor/service dependency 1 with timeline impact]
+- [Infrastructure requirement 2 with cost implications]
+
+---
+
+## Technical Considerations
+
+### Scalability and Performance
+- **Current Performance**: [Baseline metrics]
+- **Expected Performance**: [Target metrics after implementation]
+- **Scalability Pattern**: [How the solution scales with load/data growth]
+- **Performance Testing Plan**: [Load testing strategy and acceptance criteria]
+
+### Security and Compliance
+- **Security Review Required**: [Yes/No - if yes, timeline and scope]
+- **Data Privacy Impact**: [GDPR, CCPA, or other privacy regulation implications]
+- **Compliance Requirements**: [SOC2, HIPAA, or other compliance impacts]
+- **Threat Model**: [Key security risks and mitigation strategies]
+
+### Monitoring and Observability
+- **Key Metrics**: [What we'll measure to ensure system health]
+- **Alerts and Dashboards**: [Monitoring strategy for the new system]
+- **Logging Strategy**: [What events to log, retention policies]
+- **Debugging and Troubleshooting**: [Tools and procedures for issue resolution]
+
+---
+
+## Risk Assessment
+
+### Technical Risks
+
+| Risk | Probability | Impact | Mitigation Strategy |
+|------|------------|--------|-------------------|
+| **[Risk 1]** | High/Med/Low | High/Med/Low | [Specific mitigation plan] |
+| **[Risk 2]** | High/Med/Low | High/Med/Low | [Specific mitigation plan] |
+| **[Risk 3]** | High/Med/Low | High/Med/Low | [Specific mitigation plan] |
+
+### Business Risks
+
+| Risk | Probability | Impact | Mitigation Strategy |
+|------|------------|--------|-------------------|
+| **[Business Risk 1]** | High/Med/Low | High/Med/Low | [Business mitigation plan] |
+| **[Business Risk 2]** | High/Med/Low | High/Med/Low | [Business mitigation plan] |
+
+### Rollback Strategy
+- **Rollback Trigger Criteria**: [Conditions that would trigger rollback]
+- **Rollback Procedure**: [Step-by-step rollback process]
+- **Data Recovery Plan**: [How to handle data migration rollback]
+- **Communication Plan**: [How to communicate rollback to stakeholders]
+
+---
+
+## Alternative Approaches
+
+### Option 1: [Alternative Approach Name]
+**Description**: [What this approach entails]
+
+**Pros**:
+- [Advantage 1 with stakeholder impact]
+- [Advantage 2 with stakeholder impact]
+
+**Cons**:
+- [Disadvantage 1 with stakeholder impact]
+- [Disadvantage 2 with stakeholder impact]
+
+**Resource Requirements**: [Time, people, cost comparison to proposed solution]
+**Why Not Chosen**: [Clear reasoning for rejection]
+
+### Option 2: [Alternative Approach Name]
+[Same format as Option 1]
+
+### Option 3: Do Nothing
+**Consequences of Inaction**:
+- [Technical debt accumulation impact]
+- [Business opportunity cost]
+- [Competitive disadvantage timeline]
+
+---
+
+## Stakeholder Impact Analysis
+
+### Engineering Teams
+> **MCP Enhancement**: Use `mcp__writing__tailor_persona --persona "Engineering Team"` to generate detailed technical implementation guidance.
+
+**Impact**: [How this affects day-to-day engineering work]
+**Required Actions**: [What engineering teams need to do]
+**Training Needs**: [New skills or knowledge required]
+
+### Product Teams
+> **MCP Enhancement**: Use `mcp__writing__tailor_persona --persona "Product Manager"` to generate product-focused impact analysis.
+
+**Impact**: [Effects on product development and delivery]
+**Feature Delivery Impact**: [How this affects roadmap and timelines]
+**User Experience Changes**: [Customer-facing implications]
+
+### Operations Teams
+> **MCP Enhancement**: Use `mcp__writing__tailor_persona --persona "DevOps Engineer"` to generate operations-focused guidance.
+
+**Impact**: [Effects on system operations and maintenance]
+**Operational Procedures**: [Changes to deployment, monitoring, incident response]
+**Training Requirements**: [New operational knowledge needed]
+
+### Business Stakeholders
+**Revenue Impact**: [Positive/negative effects on business metrics]
+**Customer Impact**: [How customers will be affected]
+**Support Impact**: [Changes to customer support procedures]
+
+---
+
+## Testing and Quality Assurance
+
+### Testing Strategy
+- **Unit Testing**: [Coverage requirements and approach]
+- **Integration Testing**: [Inter-service testing strategy]
+- **End-to-End Testing**: [User journey validation]
+- **Performance Testing**: [Load testing plan and acceptance criteria]
+- **Security Testing**: [Penetration testing and security validation]
+
+### Quality Gates
+- **Code Review Requirements**: [Review process and criteria]
+- **Automated Testing**: [CI/CD pipeline integration]
+- **Performance Benchmarks**: [Must-pass performance criteria]
+- **Security Validation**: [Security review checkpoints]
+
+### Beta Testing Plan
+- **Beta User Selection**: [Criteria for beta participant selection]
+- **Beta Duration**: [Timeline for beta testing phase]
+- **Success Metrics**: [What constitutes successful beta testing]
+- **Feedback Integration**: [How beta feedback will be incorporated]
+
+---
+
+## Documentation and Training
+
+### Documentation Requirements
+- **Technical Documentation**: [API docs, architecture guides, troubleshooting]
+- **User Documentation**: [End-user guides, tutorials, FAQs]
+- **Operational Documentation**: [Runbooks, monitoring guides, incident procedures]
+
+### Training Plan
+- **Engineering Training**: [Technical skills development plan]
+- **Operations Training**: [New operational procedures training]
+- **Support Training**: [Customer support procedure updates]
+
+---
+
+## Measurement and Success Metrics
+
+### Key Performance Indicators
+
+| Metric | Current Baseline | Target | Measurement Method |
+|--------|-----------------|--------|-------------------|
+| **[Performance Metric]** | [Current value] | [Target value] | [How it's measured] |
+| **[Business Metric]** | [Current value] | [Target value] | [How it's measured] |
+| **[User Experience Metric]** | [Current value] | [Target value] | [How it's measured] |
+
+### Monitoring and Reporting
+- **Dashboard**: [Link to monitoring dashboard or plan to create one]
+- **Reporting Frequency**: [How often metrics will be reviewed]
+- **Success Review**: [Timeline for evaluating RFC success]
+
+---
+
+## Decision Framework
+
+### Approval Criteria
+This RFC is approved if:
+- [ ] Technical design review completed with no major concerns
+- [ ] Resource requirements approved by engineering leadership
+- [ ] Business case validated by product/business stakeholders
+- [ ] Risk assessment accepted by technical leadership
+- [ ] Implementation timeline aligns with business priorities
+
+### Review Process
+1. **Technical Review**: [Engineering leadership review - [Date]]
+2. **Business Review**: [Product/business stakeholder review - [Date]]
+3. **Security Review**: [Security team review - [Date] (if applicable)]
+4. **Final Approval**: [Executive decision - [Date]]
+
+### Decision Timeline
+- **Review Period**: [Start date] to [End date]
+- **Decision Date**: [When final decision will be made]
+- **Implementation Start**: [When work begins if approved]
+
+---
+
+## Appendices
+
+### Appendix A: Detailed Technical Specifications
+[Comprehensive technical details that support the main RFC but are too detailed for the main body]
+
+### Appendix B: Market Research and Competitive Analysis
+[Research supporting the business case for this change]
+
+### Appendix C: Cost-Benefit Analysis
+[Detailed financial analysis of the proposal]
+
+### Appendix D: Proof of Concept Results
+[Results from any prototyping or proof-of-concept work]
+
+---
+
+## Questions and Feedback
+
+### Open Questions
+1. [Question 1 that needs resolution before implementation]
+2. [Question 2 that needs resolution before implementation]
+
+### Feedback Collection
+- **Technical Feedback**: [How technical teams can provide input]
+- **Business Feedback**: [How business stakeholders can provide input]
+- **Timeline**: [Deadline for feedback submission]
+
+---
+
+## MCP-Generated Stakeholder Communications
+
+> **Executive Brief**: `mcp__writing__transform_narrative --audience executive --content "$(cat this-rfc.md)"`
+> 
+> **CTO Summary**: `mcp__writing__transform_narrative --audience cto --content "$(cat this-rfc.md)"`
+>
+> **Engineering Implementation Guide**: `mcp__writing__tailor_persona --persona "Senior Engineer" --content "$(cat this-rfc.md)"`
+>
+> **Operations Impact Assessment**: `mcp__writing__tailor_persona --persona "DevOps Engineer" --content "$(cat this-rfc.md)"`
