@@ -1,783 +1,587 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with writing projects in this repository.
 
 ## Project Overview
 
-A Python-based application template with comprehensive testing, quality gates, and best practices for building reliable, maintainable software systems using modern Python development standards.
+A comprehensive writing framework for creating high-quality how-to guides, tutorials, and instructional documentation with measurable quality gates, automated verification, and consistent standards for human-readable content.
 
 ## Essential Commands
 
-### Development Environment Setup
+### Writing Environment Setup
 ```bash
-# Python version check (requires Python 3.8+)
-python --version
-python3 --version
+# Check for required writing tools
+which vale || echo "Vale style checker not installed"
+which alex || echo "Alex inclusive language checker not installed"
+which write-good || echo "Write-good prose linter not installed"
 
-# Virtual environment setup (ALWAYS use this first)
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+# Install writing tools (Node.js required)
+npm install -g write-good alex
+npm install -g @retextjs/retext-readability
 
-# Install dependencies
-pip install -r requirements.txt
-pip install -e .  # For editable installation
-pip install -e ".[dev]"  # For development dependencies
+# Install Vale style checker
+wget https://github.com/errata-ai/vale/releases/download/v3.0.0/vale_3.0.0_Linux_64-bit.tar.gz
+tar -xzf vale_3.0.0_Linux_64-bit.tar.gz
+sudo mv vale /usr/local/bin/
+
+# Install Python-based analysis tools
+pip install textstat pypandoc proselint language-tool-python
+pip install readability-lxml markdown2 
 ```
 
-### Running the Application
+### Document Creation & Management
 ```bash
-# Run main application
-python main.py
-python -m app
+# Initialize new document from template
+./scripts/write-init.sh howto "Installing Docker on Ubuntu"
+./scripts/write-init.sh tutorial "Building Your First Web App"
+./scripts/write-init.sh guide "Troubleshooting Network Issues"
 
-# Run with specific configuration
-python main.py --config config.yaml
-python main.py --env production
+# Check document status and metrics
+./scripts/write-status.sh docs/howto-docker.md
 
-# Run Flask/FastAPI development server
-flask run
-uvicorn app.main:app --reload
+# Preview formatted output
+./scripts/write-preview.sh docs/howto-docker.md --format html
+pandoc docs/howto-docker.md -o preview.html --standalone
 
-# Run Django development server
-python manage.py runserver
+# Convert between formats
+pandoc docs/howto-docker.md -o docs/howto-docker.pdf
+pandoc docs/howto-docker.md -o docs/howto-docker.docx
 ```
 
-### Testing Commands
+### Quality Checks & Validation
 ```bash
-# Run all tests
-pytest
-pytest tests/ -v
+# Readability analysis
+textstat docs/howto-docker.md --metrics all
+readability docs/howto-docker.md --target-audience technical
 
-# Run specific test file
-pytest tests/test_user_service.py -v
+# Grammar and style checking
+vale docs/howto-docker.md
+write-good docs/howto-docker.md --parse
+proselint docs/howto-docker.md
 
-# Run specific test
-pytest tests/test_user_service.py::TestUserService::test_create_user -xvs
+# Inclusive language check
+alex docs/howto-docker.md --why
 
-# Run with coverage
-pytest --cov=src --cov-report=term-missing
-pytest --cov=app --cov-report=html
+# QUALITY GATE: Full document validation (equivalent to pytest --cov)
+./scripts/write-check.sh all docs/howto-docker.md --strict
 
-# QUALITY GATE: Run tests with coverage enforcement (85% minimum)
-pytest --cov=src --cov-fail-under=85
+# Check specific quality metrics
+./scripts/write-check.sh readability docs/howto-docker.md --flesch-target 65
+./scripts/write-check.sh structure docs/howto-docker.md --template howto
+./scripts/write-check.sh grammar docs/howto-docker.md --min-score 95
 
-# Run tests by marker
-pytest -m unit        # Unit tests only
-pytest -m integration # Integration tests only
-pytest -m "not slow"  # Skip slow tests
+# Batch validation for entire documentation
+./scripts/write-check.sh all docs/ --recursive --report
 
-# Run tests in parallel
-pytest -n auto  # Requires pytest-xdist
-
-# Run with different test runners
-python -m unittest discover
-nose2
-tox
+# Link validation
+markdown-link-check docs/howto-docker.md
 ```
 
-### Code Quality & Linting
+### Document Revision & Version Control
 ```bash
-# PEP 8 compliance check
-flake8 src/ tests/
-pylint src/ tests/
+# Track document changes
+git diff docs/howto-docker.md | ./scripts/writing-diff.sh
 
-# Type checking
-mypy src/
-pytype src/
+# Create revision with semantic versioning
+./scripts/write-version.sh docs/howto-docker.md --bump minor
 
-# Security scanning
-bandit -r src/
-safety check
+# Compare document versions
+./scripts/write-compare.sh docs/howto-docker.md v1.0 v1.1
 
-# Code formatting
-black src/ tests/
-autopep8 --in-place --recursive src/
-yapf -i -r src/
-
-# Import sorting
-isort src/ tests/
-
-# All quality checks at once
-pre-commit run --all-files
-tox -e quality
+# Generate changelog for document
+./scripts/write-changelog.sh docs/howto-docker.md
 ```
 
-### Database Management
+## Document Architecture & Structure
+
+### Core Document Types
+
+#### 1. How-To Guides
+**Purpose**: Step-by-step instructions for completing specific tasks
+**Structure**:
+```markdown
+# How to [Achieve Specific Goal]
+
+## Prerequisites
+- Required knowledge
+- Required tools/access
+- Time estimate
+
+## Overview
+Brief description of what will be accomplished
+
+## Steps
+### Step 1: [Action]
+Clear instruction with:
+- Command or action
+- Expected result
+- Troubleshooting tips
+
+### Step 2: [Action]
+...
+
+## Verification
+How to verify success
+
+## Troubleshooting
+Common issues and solutions
+
+## Next Steps
+Related guides or advanced topics
+```
+
+#### 2. Tutorials
+**Purpose**: Learning-oriented guides that teach concepts through examples
+**Structure**:
+```markdown
+# Tutorial: [Learning Objective]
+
+## What You'll Learn
+- Learning outcome 1
+- Learning outcome 2
+
+## Before You Begin
+Prerequisites and setup
+
+## Part 1: [Concept]
+### Understanding [Topic]
+Explanation with examples
+
+### Try It Yourself
+Hands-on exercise
+
+## Part 2: [Building on Concept]
+...
+
+## Summary
+Key takeaways
+
+## Practice Exercises
+Self-assessment questions
+```
+
+#### 3. Troubleshooting Guides
+**Purpose**: Problem-solving documentation
+**Structure**:
+```markdown
+# Troubleshooting: [Problem Area]
+
+## Quick Diagnosis
+Flowchart or decision tree
+
+## Common Issues
+
+### Issue: [Symptom]
+**Cause**: Explanation
+**Solution**: Step-by-step fix
+**Prevention**: How to avoid
+
+## Advanced Diagnostics
+Detailed investigation steps
+
+## When to Escalate
+Criteria for seeking help
+```
+
+### Quality Standards & Metrics
+
+#### Readability Metrics (Enforced)
+- **Flesch Reading Ease**: 
+  - How-to guides: 60-70 (high school level)
+  - Tutorials: 50-60 (some college)
+  - Technical reference: 30-50 (college/graduate)
+- **Gunning Fog Index**: <12 for all documentation
+- **Average Sentence Length**: 15-20 words
+- **Average Paragraph Length**: 3-5 sentences
+
+#### Structure Compliance
+- **Required Sections**: All template sections must be present
+- **Heading Hierarchy**: Proper H1→H2→H3 nesting
+- **List Formatting**: Consistent bullet/number usage
+- **Code Block Formatting**: Language specification required
+
+#### Grammar & Style (Vale Rules)
+- **Passive Voice**: <10% of sentences
+- **Sentence Variety**: Mix of simple, compound, complex
+- **Technical Terms**: Defined on first use
+- **Acronyms**: Spelled out initially
+- **Consistency**: Same terminology throughout
+
+#### Inclusive Language (Alex)
+- **Gendered Language**: Neutral alternatives required
+- **Ableist Language**: Accessible alternatives
+- **Cultural Sensitivity**: Respectful terminology
+- **Technical Jargon**: Plain language alternatives when possible
+
+## Writing Workflow & Best Practices
+
+### Document Development Lifecycle
+
+#### 1. Planning Phase
 ```bash
-# SQLAlchemy migrations (Alembic)
-alembic init alembic
-alembic revision --autogenerate -m "Description"
-alembic upgrade head
-alembic downgrade -1
-
-# Django migrations
-python manage.py makemigrations
-python manage.py migrate
-python manage.py showmigrations
-
-# Database console access
-python manage.py dbshell  # Django
-flask db-shell  # Flask
-
-# SQLite direct access
-sqlite3 database.db
+# Create document plan
+./scripts/write-plan.sh "Installing Docker" \
+  --audience "junior developers" \
+  --objective "successfully install Docker on Ubuntu" \
+  --prerequisites "basic Linux commands"
 ```
 
-## Architecture & Key Components
+#### 2. Drafting Phase
+```bash
+# Initialize from template
+./scripts/write-init.sh howto "Installing Docker"
 
-### Core Architecture Pattern
-The codebase follows **Clean Architecture** with clear separation of concerns:
-- **API Layer** (`src/api/` or `app/api/`): REST/GraphQL endpoints, request/response handling
-- **Service Layer** (`src/services/` or `app/services/`): Business logic and orchestration
-- **Repository Layer** (`src/repositories/` or `app/repositories/`): Data access abstraction
-- **Domain/Model Layer** (`src/models/` or `app/models/`): Entity classes and domain logic
-- **Infrastructure** (`src/infrastructure/`): External service integrations
-- **Configuration** (`src/config/` or `config/`): Application settings and environment config
-
-### Critical Files for Understanding the System
-
-1. **`requirements.txt` or `pyproject.toml`**: Dependencies and project metadata
-   - Production dependencies
-   - Development dependencies
-   - Optional dependencies by feature
-
-2. **`setup.py` or `setup.cfg`**: Package configuration
-   - Entry points
-   - Package metadata
-   - Distribution settings
-
-3. **`config.py` or `settings.py`**: Application configuration
-   - Environment-specific settings
-   - Database configuration
-   - External service credentials
-
-4. **`main.py` or `app.py`**: Application entry point
-   - Application initialization
-   - Middleware configuration
-   - Route registration
-
-5. **`conftest.py`**: Pytest configuration and fixtures
-   - Test database setup
-   - Mock configurations
-   - Shared test utilities
-
-### Framework Integration Points
-
-The application supports multiple frameworks:
-
-#### FastAPI
-- **Routes**: `@app.get()`, `@app.post()`, etc.
-- **Dependency Injection**: `Depends()`
-- **Validation**: Pydantic models
-- **Async Support**: `async def` endpoints
-
-#### Flask
-- **Blueprints**: Modular route organization
-- **Extensions**: Flask-SQLAlchemy, Flask-Migrate
-- **Context**: Application and request contexts
-
-#### Django
-- **URLs**: URLconf patterns
-- **Views**: Class-based and function-based views
-- **ORM**: Django models and QuerySets
-- **Middleware**: Request/response processing pipeline
-
-### Database Schema Key Relationships
-```
-User (1) → (*) Post
-Post (1) → (*) Comment
-User (1) → (*) Role (Many-to-Many)
-Category (1) → (*) Post
+# Use AI assistance for first draft
+./scripts/write-assist.sh outline docs/howto-docker.md
+./scripts/write-assist.sh expand docs/howto-docker.md --section "Prerequisites"
 ```
 
-## Test-Driven Development (TDD)
+#### 3. Review Phase
+```bash
+# Self-review checklist
+./scripts/write-review.sh docs/howto-docker.md --checklist
 
-### TDD Workflow (RED-GREEN-REFACTOR)
-1. **RED**: Write a failing test first
-   ```python
-   def test_user_creation():
-       user = create_user("john@example.com", "password123")
-       assert user.email == "john@example.com"
-       assert user.is_active is True
-   ```
+# Peer review request
+./scripts/write-review.sh docs/howto-docker.md --request-review @reviewer
 
-2. **GREEN**: Write minimal code to pass
-   ```python
-   def create_user(email: str, password: str) -> User:
-       return User(email=email, is_active=True)
-   ```
-
-3. **REFACTOR**: Improve code while tests pass
-   ```python
-   def create_user(email: str, password: str) -> User:
-       validate_email(email)
-       hashed_password = hash_password(password)
-       return User(email=email, password=hashed_password, is_active=True)
-   ```
-
-### TDD Best Practices
-- **Write test first, code second** - Never write production code without a failing test
-- **One test, one assertion** - Keep tests focused and specific
-- **Test behavior, not implementation** - Tests should survive refactoring
-- **YAGNI (You Ain't Gonna Need It)** - Only implement what tests require
-- **Fast feedback loop** - Tests should run in milliseconds
-- **Test isolation** - Each test should be independent
-
-### TDD Testing Pyramid
-```
-         /\
-        /  \  E2E Tests (5%)
-       /    \  - User journeys
-      /------\  Integration Tests (15%)
-     /        \  - API, Database
-    /----------\  Unit Tests (80%)
-   /            \  - Business logic
-  /--------------\
+# Check against style guide
+vale docs/howto-docker.md --config=.vale.ini
 ```
 
-### BDD with pytest-bdd
-```gherkin
-Feature: User Registration
-    Scenario: Successful registration
-        Given I am on the registration page
-        When I enter valid credentials
-        Then I should be registered successfully
-        And receive a welcome email
+#### 4. Revision Phase
+```bash
+# Apply automated fixes
+./scripts/write-fix.sh docs/howto-docker.md --auto
+
+# Track changes
+git diff docs/howto-docker.md
+
+# Verify improvements
+./scripts/write-check.sh all docs/howto-docker.md --compare-previous
 ```
 
-## Testing Strategy
+#### 5. Publication Phase
+```bash
+# Final validation
+./scripts/write-validate.sh docs/howto-docker.md --publication-ready
 
-### Test Organization
-- `tests/unit/`: Unit tests for individual functions/methods
-- `tests/integration/`: Integration tests with database/external services
-- `tests/e2e/`: End-to-end tests simulating user workflows
-- `tests/fixtures/`: Shared test data and fixtures
-- `tests/conftest.py`: Pytest configuration and fixtures
+# Generate multiple formats
+./scripts/write-publish.sh docs/howto-docker.md --formats "html,pdf,epub"
 
-### Testing Frameworks
-- **pytest**: Primary testing framework
-- **unittest**: Standard library testing (legacy support)
-- **pytest-mock**: Enhanced mocking capabilities
-- **pytest-asyncio**: Async test support
-- **pytest-bdd**: Behavior-driven development
-- **hypothesis**: Property-based testing
-- **pytest-benchmark**: Performance testing
-- **factory_boy**: Test data factories
-- **faker**: Realistic test data generation
+# Update index and navigation
+./scripts/write-index.sh --regenerate
+```
 
-### Coverage Requirements
-- Maintain >85% test coverage
-- All new features require corresponding tests
-- Use fixtures for test data management
-- Mock external dependencies appropriately
-- Test both success and error paths
-- Coverage reports in multiple formats (term, html, xml)
+## Quality Gates (MANDATORY)
 
-## Common Development Patterns
+### Before ANY Document Commit
+```bash
+# Run all quality checks
+./scripts/write-check.sh all docs/ --strict
 
-### Repository Pattern
-```python
-class UserRepository:
-    def __init__(self, db_session):
-        self.session = db_session
+# Required passing scores:
+# - Readability: Flesch score within target range
+# - Grammar: 95% accuracy minimum
+# - Structure: 100% template compliance
+# - Links: 100% valid
+# - Inclusive language: Zero violations
+```
+
+### Document Quality Standards
+1. **Readability Pass Rate**: Target score ±5 points
+2. **Grammar Score**: 95% minimum
+3. **Structure Compliance**: All required sections present
+4. **Link Validity**: 100% working links
+5. **Image Alt Text**: 100% coverage
+6. **Code Examples**: Tested and working
+7. **Inclusive Language**: Zero violations
+
+### Pre-commit Hooks
+```bash
+# Install pre-commit hooks for writing
+cat > .git/hooks/pre-commit << 'EOF'
+#!/bin/bash
+# Check all modified markdown files
+for file in $(git diff --cached --name-only | grep -E '\.md$'); do
+    echo "Checking $file..."
     
-    async def get_by_id(self, user_id: int) -> Optional[User]:
-        return await self.session.query(User).filter_by(id=user_id).first()
+    # Readability check
+    if ! ./scripts/write-check.sh readability "$file"; then
+        echo "❌ Readability check failed for $file"
+        exit 1
+    fi
     
-    async def create(self, user_data: dict) -> User:
-        user = User(**user_data)
-        self.session.add(user)
-        await self.session.commit()
-        return user
-```
-
-### Service Layer Pattern
-```python
-class UserService:
-    def __init__(self, user_repository: UserRepository):
-        self.repository = user_repository
+    # Grammar check
+    if ! ./scripts/write-check.sh grammar "$file"; then
+        echo "❌ Grammar check failed for $file"
+        exit 1
+    fi
     
-    async def create_user(self, user_data: UserCreateDTO) -> UserResponseDTO:
-        # Business logic and validation
-        user = await self.repository.create(user_data.dict())
-        return UserResponseDTO.from_orm(user)
+    # Structure check
+    if ! ./scripts/write-check.sh structure "$file"; then
+        echo "❌ Structure check failed for $file"
+        exit 1
+    fi
+done
+echo "✅ All writing quality checks passed"
+EOF
+chmod +x .git/hooks/pre-commit
 ```
 
-### Error Handling
-```python
-class AppException(Exception):
-    """Base application exception"""
-    pass
+## Common Writing Patterns
 
-class ValidationError(AppException):
-    """Validation error exception"""
-    pass
-
-@app.exception_handler(ValidationError)
-async def validation_error_handler(request, exc):
-    return JSONResponse(
-        status_code=400,
-        content={"detail": str(exc)}
-    )
-```
-
-### Async/Await Patterns
-```python
-async def process_data(data_id: int):
-    async with get_session() as session:
-        data = await session.get(Data, data_id)
-        result = await external_api.process(data)
-        return result
-```
-
-## Configuration Management
-
-### Environment Variables
-```python
-# Using python-dotenv
-from dotenv import load_dotenv
-load_dotenv()
-
-# Using pydantic settings
-from pydantic import BaseSettings
-
-class Settings(BaseSettings):
-    database_url: str
-    api_key: str
-    debug: bool = False
-    
-    class Config:
-        env_file = ".env"
-```
-
-### Configuration Profiles
-- `development`: Local development with SQLite
-- `testing`: Test configuration with in-memory database
-- `staging`: Pre-production environment
-- `production`: Production settings with optimizations
-
-## Quality Standards
-
-### Code Style
-- PEP 8 compliance (enforced by flake8/black)
-- Maximum line length: 88 characters (black default)
-- Maximum function length: 50 lines
-- Maximum cyclomatic complexity: 10
-- Type hints for all public functions
-
-### Static Analysis Rules
-- Flake8: Zero violations
-- Pylint: Score >9.0/10
-- MyPy: No type errors in strict mode
-- Bandit: No high-severity security issues
-
-## Security Best Practices
-
-- Input validation using Pydantic/Marshmallow
-- SQL injection prevention with ORM/parameterized queries
-- XSS prevention in template rendering
-- CSRF protection in web frameworks
-- Secure password hashing (bcrypt/argon2)
-- Environment variables for secrets (never hardcode)
-- Regular dependency updates (`pip-audit`, `safety`)
-- Rate limiting and DDoS protection
-- Proper authentication/authorization (JWT, OAuth2)
-
-## Performance Optimization
-
-### Database Optimization
-- Connection pooling (SQLAlchemy pool_size)
-- Query optimization (eager loading, select_related)
-- Database indexing strategies
-- Caching with Redis/Memcached
-- Pagination for large datasets
-
-### Application Performance
-- Async/await for I/O operations
-- Background tasks (Celery, RQ, FastAPI BackgroundTasks)
-- Response caching strategies
-- CDN for static assets
-- Profile with cProfile/py-spy
-- Memory profiling with memory_profiler
-
-## Development Workflow Requirements
-
-### Quality Gates (MANDATORY)
-1. **Before ANY Commit**:
+### Clear Instructions Pattern
+```markdown
+1. **Action verb** + **specific object** + **context**
    ```bash
-   # Run quality checks
-   pre-commit run --all-files
-   
-   # Run tests with coverage
-   pytest --cov=src --cov-fail-under=85
-   
-   # Type checking
-   mypy src/
+   # Command to execute
+   sudo apt-get update
    ```
-
-2. **Mandatory Standards**:
-   - 100% Test Pass Rate
-   - 85% Code Coverage minimum
-   - PEP 8 compliance (flake8 clean)
-   - Type hints for public APIs
-   - No security vulnerabilities (bandit clean)
-
-3. **Pre-commit Hooks Setup**:
-   ```bash
-   # Install pre-commit
-   pip install pre-commit
-   pre-commit install
+   
+   **Expected output:**
    ```
-
-## Dependency Management
-
-### Package Management
-```bash
-# Update requirements
-pip freeze > requirements.txt
-
-# Use pip-tools for better dependency management
-pip-compile requirements.in
-pip-sync
-
-# Poetry (alternative)
-poetry add package
-poetry update
-poetry lock
-
-# Pipenv (alternative)
-pipenv install package
-pipenv update
+   Hit:1 http://archive.ubuntu.com/ubuntu focal InRelease
+   ...
+   ```
+   
+   **If you see an error:**
+   - Check your internet connection
+   - Verify sudo permissions
 ```
 
-### Virtual Environment Best Practices
-- Always use virtual environments
-- Never commit venv/ directory
-- Pin exact versions in requirements.txt
-- Separate dev and production dependencies
-- Regular security audits with `pip-audit`
+### Progressive Disclosure Pattern
+```markdown
+## Basic Usage
+Simple example for common case
 
-## API Documentation
+<details>
+<summary>Advanced Options</summary>
 
-### Auto-generated Documentation
-- **FastAPI**: Automatic OpenAPI/Swagger at `/docs`
-- **Flask**: Flask-RESTX or Flasgger for Swagger
-- **Django**: DRF with drf-spectacular
-- **GraphQL**: GraphiQL or Apollo Studio
+Additional complexity only when needed
 
-### Documentation Standards
-- Docstrings for all public functions (Google/NumPy style)
-- Type hints for better IDE support
-- README with setup instructions
-- API examples in documentation
-- Changelog maintenance
-
-## Robust Logging Architecture
-
-### Logging Configuration
-```python
-import logging
-import logging.config
-import json
-from pythonjsonlogger import jsonlogger
-
-# Development configuration
-LOGGING_CONFIG = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'detailed': {
-            'format': '%(asctime)s - %(name)s - %(levelname)s - %(funcName)s:%(lineno)d - %(message)s'
-        },
-        'json': {
-            '()': 'pythonjsonlogger.jsonlogger.JsonFormatter',
-            'format': '%(asctime)s %(name)s %(levelname)s %(message)s'
-        }
-    },
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'level': 'INFO',
-            'formatter': 'detailed',
-            'stream': 'ext://sys.stdout'
-        },
-        'file': {
-            'class': 'logging.handlers.RotatingFileHandler',
-            'level': 'DEBUG',
-            'formatter': 'json',
-            'filename': 'logs/app.log',
-            'maxBytes': 10485760,  # 10MB
-            'backupCount': 5
-        },
-        'error_file': {
-            'class': 'logging.handlers.RotatingFileHandler',
-            'level': 'ERROR',
-            'formatter': 'json',
-            'filename': 'logs/errors.log',
-            'maxBytes': 10485760,  # 10MB
-            'backupCount': 5
-        }
-    },
-    'loggers': {
-        '': {  # root logger
-            'level': 'DEBUG',
-            'handlers': ['console', 'file', 'error_file']
-        },
-        'app': {
-            'level': 'DEBUG',
-            'handlers': ['console', 'file'],
-            'propagate': False
-        },
-        'sqlalchemy.engine': {
-            'level': 'WARNING',  # Reduce SQL noise
-            'handlers': ['file'],
-            'propagate': False
-        }
-    }
-}
-
-logging.config.dictConfig(LOGGING_CONFIG)
-logger = logging.getLogger(__name__)
+</details>
 ```
 
-### Structured Logging Best Practices
-```python
-# Use structured logging for better parsing
-logger.info(
-    "User action completed",
-    extra={
-        "user_id": user.id,
-        "action": "login",
-        "ip_address": request.remote_addr,
-        "duration_ms": elapsed_time,
-        "metadata": {"browser": user_agent}
-    }
-)
+### Troubleshooting Pattern
+```markdown
+### Problem: [Specific error message or symptom]
 
-# Context managers for request tracking
-import contextvars
-import uuid
+**Quick Fix:**
+Most common solution
 
-request_id = contextvars.ContextVar('request_id', default=None)
+**Detailed Solution:**
+1. Diagnostic step
+2. Resolution step
+3. Verification step
 
-class RequestIdFilter(logging.Filter):
-    def filter(self, record):
-        record.request_id = request_id.get()
-        return True
-
-# Add to all handlers
-for handler in logging.root.handlers:
-    handler.addFilter(RequestIdFilter())
+**Prevention:**
+How to avoid this issue
 ```
 
-### Log Levels and When to Use Them
-- **DEBUG**: Detailed diagnostic information (variable values, function entry/exit)
-- **INFO**: General informational messages (process started, configuration loaded)
-- **WARNING**: Something unexpected but handled (deprecated feature used, retry attempted)
-- **ERROR**: Error occurred but application continues (failed to send email, API call failed)
-- **CRITICAL**: System is unusable (database connection lost, out of disk space)
+## Automation & Tooling
 
-### Performance Logging
+### Custom Writing Tools
+
+#### Write-Check Script Core
 ```python
-import time
-import functools
+#!/usr/bin/env python3
+# scripts/write-check.py
 
-def log_performance(func):
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        start = time.perf_counter()
-        try:
-            result = func(*args, **kwargs)
-            elapsed = (time.perf_counter() - start) * 1000
-            logger.info(
-                f"Function executed successfully",
-                extra={
-                    "function": func.__name__,
-                    "duration_ms": elapsed,
-                    "status": "success"
-                }
-            )
-            return result
-        except Exception as e:
-            elapsed = (time.perf_counter() - start) * 1000
-            logger.error(
-                f"Function failed",
-                extra={
-                    "function": func.__name__,
-                    "duration_ms": elapsed,
-                    "status": "error",
-                    "error": str(e)
-                },
-                exc_info=True
-            )
-            raise
-    return wrapper
-```
+import textstat
+import language_tool_python
+from readability import Readability
 
-### Correlation IDs for Distributed Tracing
-```python
-from flask import g, request
-import uuid
-
-@app.before_request
-def before_request():
-    g.correlation_id = request.headers.get('X-Correlation-ID', str(uuid.uuid4()))
-    request_id.set(g.correlation_id)
-    logger.info(
-        "Request started",
-        extra={
-            "correlation_id": g.correlation_id,
-            "method": request.method,
-            "path": request.path,
-            "remote_addr": request.remote_addr
+class DocumentValidator:
+    def __init__(self, target_audience="technical"):
+        self.target_audience = target_audience
+        self.tool = language_tool_python.LanguageTool('en-US')
+        
+    def check_readability(self, text):
+        flesch_score = textstat.flesch_reading_ease(text)
+        fog_index = textstat.gunning_fog(text)
+        
+        targets = {
+            "general": (70, 80),
+            "technical": (60, 70),
+            "expert": (30, 50)
         }
-    )
-
-@app.after_request
-def after_request(response):
-    response.headers['X-Correlation-ID'] = g.correlation_id
-    logger.info(
-        "Request completed",
-        extra={
-            "correlation_id": g.correlation_id,
-            "status_code": response.status_code,
-            "content_length": response.content_length
+        
+        min_score, max_score = targets[self.target_audience]
+        passed = min_score <= flesch_score <= max_score
+        
+        return {
+            "passed": passed,
+            "flesch_score": flesch_score,
+            "fog_index": fog_index,
+            "target_range": (min_score, max_score)
         }
-    )
-    return response
-```
-
-### Security Logging (OWASP Guidelines)
-```python
-# Log security events without sensitive data
-def log_security_event(event_type: str, user_id: str, details: dict):
-    # Never log passwords, tokens, or PII
-    safe_details = {k: v for k, v in details.items() 
-                   if k not in ['password', 'token', 'ssn', 'credit_card']}
     
-    logger.warning(
-        f"Security event: {event_type}",
-        extra={
-            "event_type": event_type,
-            "user_id": user_id,
-            "details": safe_details,
-            "timestamp": datetime.utcnow().isoformat()
+    def check_grammar(self, text):
+        matches = self.tool.check(text)
+        errors = [m for m in matches if m.category == 'GRAMMAR']
+        
+        return {
+            "passed": len(errors) == 0,
+            "error_count": len(errors),
+            "errors": errors[:5]  # First 5 errors
         }
-    )
-
-# Examples of security events to log
-log_security_event("failed_login", user_id, {"ip": ip, "attempts": 3})
-log_security_event("privilege_escalation", user_id, {"role": "admin"})
-log_security_event("data_export", user_id, {"records": 1000})
 ```
 
-### Monitoring and Alerting Integration
-```python
-# Sentry integration for error tracking
-import sentry_sdk
-from sentry_sdk.integrations.logging import LoggingIntegration
+### Continuous Improvement
 
-sentry_logging = LoggingIntegration(
-    level=logging.INFO,        # Capture info and above
-    event_level=logging.ERROR  # Send errors as events
-)
+#### Document Analytics
+```bash
+# Track document performance
+./scripts/write-analytics.sh docs/howto-docker.md \
+  --metrics "views,time-on-page,completion-rate"
 
-sentry_sdk.init(
-    dsn="your-sentry-dsn",
-    integrations=[sentry_logging],
-    traces_sample_rate=0.1,
-    environment="production"
-)
+# Reader feedback integration
+./scripts/write-feedback.sh docs/howto-docker.md --summarize
 
-# Custom metrics for monitoring
-from prometheus_client import Counter, Histogram, Gauge
-
-request_count = Counter('app_requests_total', 'Total requests', ['method', 'endpoint', 'status'])
-request_duration = Histogram('app_request_duration_seconds', 'Request duration', ['method', 'endpoint'])
-active_users = Gauge('app_active_users', 'Active users')
-
-# Use in application
-@request_duration.time()
-def process_request():
-    # Your code here
-    pass
+# A/B testing for documentation
+./scripts/write-test.sh docs/howto-docker.md \
+  --variant-a "current" \
+  --variant-b "simplified"
 ```
 
-### Log Aggregation and Analysis
-- **ELK Stack**: Elasticsearch, Logstash, Kibana
-- **Grafana Loki**: Lightweight log aggregation
-- **AWS CloudWatch**: Cloud-native logging
-- **Google Cloud Logging**: GCP integration
-- **Azure Monitor**: Azure native solution
+## Style Guide References
 
-### Logging Best Practices
-1. **Always use structured logging** - JSON format for machine parsing
-2. **Include correlation IDs** - Track requests across services
-3. **Never log sensitive data** - No passwords, tokens, or PII
-4. **Use appropriate log levels** - Don't log everything at DEBUG
-5. **Implement log rotation** - Prevent disk space issues
-6. **Centralize logs** - Single source of truth
-7. **Set up alerts** - Proactive monitoring for CRITICAL/ERROR
-8. **Performance impact** - Async logging for high-throughput
-9. **Contextual information** - Include user, session, request IDs
-10. **Audit trail** - Log all security-relevant events
+### Writing Style
+- **Voice**: Active voice preferred
+- **Person**: Second person ("you") for instructions
+- **Tense**: Present tense for current state, future for results
+- **Tone**: Friendly but professional
 
-## Docker Support
+### Formatting Standards
+- **Headings**: Title Case for H1, Sentence case for H2+
+- **Lists**: Bullets for unordered, numbers for sequential
+- **Code**: Backticks for inline, fenced blocks for multiline
+- **Emphasis**: Bold for UI elements, italic for new terms
 
-### Dockerfile Best Practices
-```dockerfile
-FROM python:3.11-slim
+### Technical Writing Best Practices
+1. **Front-load important information**
+2. **One idea per paragraph**
+3. **Use examples liberally**
+4. **Provide context before details**
+5. **Include visual aids when helpful**
+6. **Test all code examples**
+7. **Link to related resources**
+8. **Maintain consistent terminology**
 
-WORKDIR /app
+## Document Templates
 
-# Install dependencies first (better caching)
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+### Available Templates
+- `howto.md.template` - Step-by-step guides
+- `tutorial.md.template` - Learning-oriented content
+- `troubleshooting.md.template` - Problem-solving guides
+- `reference.md.template` - Technical specifications
+- `quickstart.md.template` - Getting started guides
+- `faq.md.template` - Frequently asked questions
 
-# Copy application code
-COPY . .
+### Using Templates
+```bash
+# List available templates
+ls templates/
 
-# Run as non-root user
-USER nobody
+# Create from template
+cp templates/howto.md.template docs/my-howto.md
 
-CMD ["python", "main.py"]
+# Or use the initialization script
+./scripts/write-init.sh howto "My How-To Guide Title"
+```
+
+## Integration with Development Workflow
+
+### Documentation-Driven Development (DDD)
+1. Write the documentation first
+2. Validate it passes quality gates
+3. Implement what was documented
+4. Update documentation based on implementation
+5. Maintain documentation with code changes
+
+### CI/CD Pipeline Integration
+```yaml
+# .github/workflows/documentation.yml
+name: Documentation Quality
+
+on: [push, pull_request]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Install writing tools
+        run: |
+          npm install -g write-good alex
+          pip install textstat proselint
+      
+      - name: Check readability
+        run: ./scripts/write-check.sh readability docs/
+      
+      - name: Check grammar
+        run: ./scripts/write-check.sh grammar docs/
+      
+      - name: Check structure
+        run: ./scripts/write-check.sh structure docs/
+      
+      - name: Generate report
+        run: ./scripts/write-check.sh report docs/ --format junit
 ```
 
 ## Known Issues & Best Practices
 
-- **Circular Imports**: Use TYPE_CHECKING and forward references
-- **Async Context**: Proper session management in async code
-- **Memory Leaks**: Close resources properly (files, connections)
-- **Global State**: Avoid mutable global state, use dependency injection
-- **Testing Async**: Use pytest-asyncio fixtures properly
-- **Database Connections**: Use connection pooling, avoid connection leaks
-- **Import Organization**: Follow PEP 8 import ordering (standard, third-party, local)
+- **Version Control**: Track meaningful changes, not every edit
+- **Collaboration**: Use review comments for feedback
+- **Internationalization**: Consider translation from the start
+- **Accessibility**: Always include alt text and proper headings
+- **Mobile Reading**: Test documentation on mobile devices
+- **Offline Access**: Provide downloadable formats (PDF, EPUB)
+- **Search Optimization**: Use descriptive titles and headers
 
-## Debugging Tips
+## Debugging Documentation Issues
 
+### Common Problems
+1. **Low readability scores**: Shorten sentences, use simpler words
+2. **Failed structure validation**: Check template compliance
+3. **Broken links**: Use relative paths, validate regularly
+4. **Inconsistent terminology**: Create glossary, use consistently
+5. **Grammar errors**: Run automated fixes, then manual review
+
+### Tools for Debugging
 ```bash
-# Python debugger
-import pdb; pdb.set_trace()  # Breakpoint
+# Analyze specific problem
+./scripts/write-debug.sh docs/howto-docker.md --issue readability
 
-# IPython debugger (better REPL)
-import ipdb; ipdb.set_trace()
+# Get improvement suggestions
+./scripts/write-suggest.sh docs/howto-docker.md
 
-# Remote debugging with debugpy
-python -m debugpy --listen 5678 main.py
-
-# Memory profiling
-python -m memory_profiler main.py
-
-# Performance profiling
-python -m cProfile -s cumulative main.py
+# Compare with high-quality example
+./scripts/write-compare.sh docs/howto-docker.md examples/gold-standard.md
 ```
 
-## CI/CD Pipeline
+## Metrics & Reporting
 
-### GitHub Actions / GitLab CI
-- Automated testing on push/PR
-- Code quality checks
-- Security scanning
-- Coverage reporting
-- Automated deployment to staging/production
-- Docker image building and registry push
+### Document Quality Dashboard
+```bash
+# Generate quality report
+./scripts/write-report.sh docs/ --format html --output report.html
+
+# Metrics included:
+# - Average readability score
+# - Grammar pass rate
+# - Structure compliance rate
+# - Link validity percentage
+# - Document freshness (last updated)
+# - Reader engagement metrics
+```
+
+### Continuous Monitoring
+```bash
+# Set up monitoring
+./scripts/write-monitor.sh setup --slack-webhook $WEBHOOK_URL
+
+# Alert on quality degradation
+./scripts/write-monitor.sh watch docs/ --threshold 90
+```
