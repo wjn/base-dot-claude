@@ -565,3 +565,9 @@ jobs:
 # Alert on quality degradation
 ./scripts/write-monitor.sh watch docs/ --threshold 90
 ```
+
+## Workstream Management
+
+### End-of-Day Handoff Process
+For detailed instructions on preparing workstream documentation for handoff between sessions, see:
+[Workstream EOD Instructions](.claude/strategies/workstream-eod-instructions.md)
