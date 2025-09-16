@@ -31,17 +31,6 @@ git ls-remote --heads origin
 
 ## 📁 Available Branches
 
-### `main` - Base Configuration
-The foundation branch with core technical writing framework.
-```bash
-git checkout main
-```
-**Contains:**
-- Core writing quality framework
-- Basic document templates
-- Essential writing tools and scripts
-- MCP integration setup
-
 ### `python` - Python Development Standards
 Enhanced configuration for Python projects with strict quality standards.
 ```bash
@@ -53,8 +42,45 @@ git checkout python
 - FastAPI and backend development patterns
 - Repository design patterns
 - Python testing and quality gates
+- Technical writing framework base
 
-### Other Branches (Coming Soon)
+### `java` - Java Enterprise Development
+Configuration for Java/Spring Boot projects with enterprise standards.
+```bash
+git checkout java
+```
+**Contains:**
+- Java enterprise development standards
+- Spring Boot patterns and best practices
+- Maven/Gradle build configurations
+- JUnit testing frameworks
+- Google Java Style Guide compliance
+
+### `writing-howto` - How-To Documentation Framework
+Specialized for creating step-by-step instructional content.
+```bash
+git checkout writing-howto
+```
+**Contains:**
+- How-to guide templates and structures
+- Readability optimization tools
+- Step-by-step instruction patterns
+- Quality gates for instructional content
+- User-focused writing standards
+
+### `writing-technical` - Technical Documentation Framework
+Advanced technical writing with MCP integration.
+```bash
+git checkout writing-technical
+```
+**Contains:**
+- API documentation templates
+- Architecture decision records (ADR)
+- RFC templates and processes
+- MCP-powered content transformation
+- Multi-audience optimization tools
+
+### Additional Branches (Coming Soon)
 Additional specialized branches may be added for:
 - `javascript` - Node.js and frontend development
 - `devops` - Infrastructure and CI/CD pipelines
@@ -117,17 +143,18 @@ Choose your branch based on your project type:
 
 | Project Type | Recommended Branch | Key Features |
 |-------------|-------------------|--------------|
-| Technical Documentation | `main` | Writing framework, quality checks |
 | Python API/Backend | `python` | PEP 8, FastAPI patterns, testing |
-| Full-Stack Application | `python` + cherry-pick | Combine configurations |
-| New Framework | `main` as base | Fork and customize |
+| Java Enterprise | `java` | Spring Boot, Maven/Gradle, JUnit |
+| How-To Guides | `writing-howto` | Step-by-step templates, readability |
+| Technical Docs | `writing-technical` | API docs, ADRs, MCP integration |
+| Full-Stack Application | Multiple branches | Cherry-pick from relevant branches |
 
 ## 🔧 Customization
 
 ### Creating Your Own Configuration Branch
 ```bash
-# Create new branch from main
-git checkout main
+# Create new branch from an existing one (e.g., python)
+git checkout python  # or any other base branch
 git checkout -b my-custom-config
 
 # Add your customizations
@@ -139,11 +166,11 @@ git commit -m "Add custom configuration"
 git push origin my-custom-config
 ```
 
-### Merging Updates from Base
+### Merging Updates from Another Branch
 ```bash
-# Update your custom branch with latest base changes
+# Update your custom branch with changes from another branch
 git checkout my-custom-config
-git merge main  # or specific branch
+git merge python  # or any other branch
 # Resolve any conflicts
 git commit
 ```
@@ -187,14 +214,16 @@ Each branch contains:
 ## ⚠️ Important Notes
 
 - Each branch is independently maintained
-- Some branches may have breaking changes from main
+- Branches may have different configurations and tools
 - Always review CLAUDE.md after switching branches
 - Test configurations in a safe environment first
 
 ## 🏷️ Version History
 
-- `main` - Stable base configuration
-- `python` - Added 2025-01-16 with Python standards
+- `python` - Python development with strict quality standards
+- `java` - Java enterprise development with Spring Boot
+- `writing-howto` - Instructional documentation framework
+- `writing-technical` - Technical documentation with MCP integration
 - More branches coming soon...
 
 ---
