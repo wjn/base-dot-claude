@@ -31,7 +31,7 @@ TODO: update to use the tools/quality app given it will generate reports.
 
 - Whenever there are failing tests we want to resolve those failures by addressing the root cause causing the failure
 - We don't just want to quiet the testing system and thereby swallow errors, failures, or warnings
-- You should use the testing output AND the logs in the logs/ directory, e.g.,  @mydiygarage.log or tests.log.
+- You should use the testing output AND the logs in the logs/ directory, e.g., application.log or tests.log.
 - The simpler resolution generally always should be preferred.
 
 ## Test Quality Requirements
