@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with technical writing projects in this repository.
 
+## SME Subagent Guidance
+
+**PREFERRED APPROACH**: When working on tasks in this codebase, utilize the appropriate specialized subagents (SME agents) that align with your work focus. Claude Code has access to various expert agents that can provide domain-specific expertise and best practices. Always consider if there's a subagent that specializes in the area you're working on before proceeding with general implementation.
+
 ## Project Overview
 
 A comprehensive technical writing framework for creating high-quality API documentation, architectural designs, RFCs, and technical specifications with automated quality assurance, narrative transformation, and stakeholder-specific content adaptation using the integrated writing MCP.
