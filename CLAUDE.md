@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## SME Subagent Guidance
+
+**PREFERRED APPROACH**: When working on tasks in this codebase, utilize the appropriate specialized subagents (SME agents) that align with your work focus. Claude Code has access to various expert agents that can provide domain-specific expertise and best practices. Always consider if there's a subagent that specializes in the area you're working on before proceeding with general implementation.
+
 ## Project Overview
 
 A Python-based application template with comprehensive testing, quality gates, and best practices for building reliable, maintainable software systems using modern Python development standards.
