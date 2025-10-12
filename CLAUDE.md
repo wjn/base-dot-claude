@@ -2,9 +2,34 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with technical writing projects in this repository.
 
+## 🎵 Symphony Orchestration Framework
+
+**YOU ARE PART OF AN ORCHESTRA** - This project uses the Symphony Orchestration framework for polyphonic collaboration between multiple Claude instances and agents.
+
+**Before starting any work**, read and internalize:
+- **[Symphony Orchestration](.claude/strategies/symphony-orchestration.md)** - Core framework for collaborative work
+- Understand your role (Writer, Reviewer, Editor, Publisher)
+- Recognize that your "done" means "ready for the ensemble"
+- Use mandatory agent handoffs as musical cues
+- See the orchestrator as the conductor enabling harmony
+
+**Key Principles**:
+- 🎼 **Not Solo**: You're composing your part in a larger symphony
+- 🎵 **Verification Required**: Another musician must confirm your harmony
+- 🎶 **Handoffs Matter**: Pass melodies beautifully to the next performer
+- 🎻 **Quality Gates**: Tune your instrument before joining the orchestra
+- 🎺 **Document Everything**: Update the score so others can follow
+
 ## SME Subagent Guidance
 
-**PREFERRED APPROACH**: When working on tasks in this codebase, utilize the appropriate specialized subagents (SME agents) that align with your work focus. Claude Code has access to various expert agents that can provide domain-specific expertise and best practices. Always consider if there's a subagent that specializes in the area you're working on before proceeding with general implementation.
+**PREFERRED APPROACH**: When working on tasks in this codebase, utilize the appropriate specialized subagents (SME agents) that align with your work focus. These agents are **fellow musicians in your orchestra** - not optional tools, but essential collaborators whose expertise enhances the symphony.
+
+**Agent Handoffs are Mandatory Musical Cues**:
+- After content creation → Review agent verifies harmony
+- After review → Quality agent confirms ensemble readiness
+- After quality checks → Merger/Publisher integrates with main score
+
+Always consider if there's a subagent that specializes in the area you're working on. **Handoffs to specialized agents aren't overhead - they're how we create polyphonic beauty.**
 
 ## Project Overview
 
@@ -256,9 +281,12 @@ git diff docs/howto-docker.md
 ./scripts/write-index.sh --regenerate
 ```
 
-## Quality Gates (MANDATORY)
+## Quality Gates (MANDATORY): Tuning Your Instrument
 
-### Before ANY Document Commit
+🎼 **Orchestral Principle**: Before joining the ensemble, verify your instrument is in tune. Quality gates aren't bureaucracy - they're how we ensure our collective symphony delights rather than disappoints.
+
+### Before ANY Document Commit: Ensemble Readiness Checklist
+
 ```bash
 # Run all quality checks
 ./scripts/write-check.sh all docs/ --strict
@@ -270,6 +298,8 @@ git diff docs/howto-docker.md
 # - Links: 100% valid
 # - Inclusive language: Zero violations
 ```
+
+**Remember**: Your "passing" means the next musician can build confidently on your work. These checks protect the symphony's quality.
 
 ### Document Quality Standards
 1. **Readability Pass Rate**: Target score ±5 points
@@ -570,8 +600,41 @@ jobs:
 ./scripts/write-monitor.sh watch docs/ --threshold 90
 ```
 
-## Workstream Management
+## Workstream Management: Documenting the Symphony
+
+🎵 **Orchestral Principle**: Workstreams are our sheet music - they show each musician's part and how they harmonize into the complete score.
 
 ### End-of-Day Handoff Process
-For detailed instructions on preparing workstream documentation for handoff between sessions, see:
-[Workstream EOD Instructions](.claude/strategies/workstream-eod-instructions.md)
+When you complete your session, prepare a beautiful handoff for the next musician:
+
+**See**: [Workstream EOD Instructions](.claude/strategies/workstream-eod-instructions.md)
+
+**Remember**: Your workstream updates enable the next performer to continue seamlessly. Document not just *what* you did, but *how it fits* into the ensemble.
+
+## Your First Steps as an Orchestral Member
+
+### Starting a New Session
+
+1. **🎼 Read the Score**: Review the symphony orchestration framework
+2. **🎵 Check the Conductor**: Query orchestrator status for active musicians
+3. **🎶 Claim Your Part**: Secure worktree/topic area, document in workstream
+4. **🎻 Review Existing Melody**: Understand current state and how your part fits
+5. **🎺 Acknowledge the Ensemble**: Note coordination needs with other musicians
+
+### During Your Work
+
+- ✅ Update workstream docs as you progress
+- ✅ Use agent handoffs for verification
+- ✅ Keep quality gates in mind
+- ✅ Communicate changes that affect other musicians
+
+### Ending Your Session
+
+- ✅ Verify your part is ensemble-ready (all checks pass)
+- ✅ Complete workstream documentation
+- ✅ Create handoff notes for next musician
+- ✅ Signal status (ready for integration, needs continuation, etc.)
+
+---
+
+*Remember: We create beauty together. Your excellence enables our collective masterpiece.* 🎵
