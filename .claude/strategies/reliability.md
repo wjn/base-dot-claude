@@ -1,67 +1,34 @@
-# Reliability
-
-## Testing
-
-- All development should be test driven. This means we start with tests for new work or adding features.
+# Reliability ## Testing - All development should be test driven. This means we start with tests for new work or adding features.
 - We ALWAYS run the entire test suite after making changes to prove no regressions have occurred.
 - 85% test coverage is a minimum
 - We start and end with tests in our development process.
-- Tests should be run in parallel to support the fastest execution time.
-
-  - If tests cannot run in parallel they should be segmented out, such that the tests in the segment run sequentially.
-  - The segments themselves are run in parallel with the other tests.
-
-- For pytest we should always be running in the python virtual environment.
+- Tests should be run in parallel to support the fastest execution time. - If tests cannot run in parallel they should be segmented out, such that the tests in the segment run sequentially. - The segments themselves are run in parallel with the other tests. - For pytest we should always be running in the python virtual environment.
 - We do not ignore or suppress tests, warnings, or errors.
 - We fix root causes rather than just making tests pass.
 - Goal for tests: the entire test suite runs with no errors, warnings, or failures and coverage is minimum 85%.
-- We do not disable tests, test files, or test suites. We fix the root issues causing problems for those.
-
-### Requirements for Running Test Suites
+- We do not disable tests, test files, or test suites. We fix the root issues causing problems for those. ### Requirements for Running Test Suites
 - Use designated Claude test commands to prevent system resource exhaustion
 - **Web Platform**: Use `npm run test:claude` or `npm run test:claude:coverage` instead of `npm test`
 - **Mobile Platform**: Use `npm run test:claude` or `npm run test:claude:coverage` instead of `npm test`
 - **Backend Platform**: Continue using standard pytest commands (no process spawning issues)
 - These commands enforce single-threaded execution and process isolation to prevent 20+ node process spawning
-- AI instances should coordinate test execution to avoid simultaneous resource-intensive operations
-
-TODO: update to use the tools/quality app given it will generate reports.
-
-### Triaging Failed Tests
-
-- Whenever there are failing tests we want to resolve those failures by addressing the root cause causing the failure
+- AI instances should coordinate test execution to avoid simultaneous resource-intensive operations TODO: update to use the tools/quality app given it will generate reports. ### Triaging Failed Tests - Whenever there are failing tests we want to resolve those failures by addressing the root cause causing the failure
 - We don't just want to quiet the testing system and thereby swallow errors, failures, or warnings
-- You should use the testing output AND the logs in the logs/ directory, e.g., application.log or tests.log.
-- The simpler resolution generally always should be preferred.
-
-## Test Quality Requirements
-
-### Functional Test Priority
+- use the testing output AND the logs in the logs/ directory, e.g., application.log or tests.log.
+- The simpler resolution always should be preferred. ## Test Quality Requirements ### Functional Test Priority
 - Tests must validate real functionality, not just code paths
 - Integration tests preferred over heavily mocked unit tests
 - Each test must have clear business value beyond coverage metrics
-- "Coverage theater" tests that mock everything are prohibited
-
-### Test Development Process
+- "Coverage theater" tests that mock everything are prohibited ### Test Development Process
 - Start with failing tests that describe expected behavior
 - Write minimal code to make tests pass
 - Refactor both code and tests for clarity
-- Ensure tests fail appropriately when functionality breaks
-
-### Test Failure Analysis Protocol
-- Failing tests indicate real problems, not test issues  
-- Fix the code/system, not the test (unless test is genuinely incorrect)
+- Ensure tests fail appropriately when functionality breaks ### Test Failure Analysis Protocol
+- Failing tests indicate real problems, not test issues - Fix the code/system, not the test (unless test is genuinely incorrect)
 - Never disable tests to make CI green - fix root causes
-- Investigate why existing tests didn't catch regressions
-
-## Vigiliant Resiliency
-
-- Reliability should be proactive, we seek to find and expose problems in the work we're doing.
+- Investigate why existing tests didn't catch regressions ## Vigiliant Resiliency - Reliability should be proactive, we seek to find and expose problems in the work we're doing.
 - We're curious about edge cases and prove them out with tests.
 - If there's opportunity to create failure states that are "less bad" then we should prefer those.
 - Retries, load shedding, and high-quality health checks are basic and required.
 - We prefer simplicity and clarity
 - Handling errors is critical, we seek to guide failures that cannot be prevented to "less bad" outcomes.
-
-
-
